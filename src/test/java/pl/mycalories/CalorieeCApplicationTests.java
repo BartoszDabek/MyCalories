@@ -1,4 +1,4 @@
-package pl.devpress.CalorieeC;
+package pl.mycalories;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
