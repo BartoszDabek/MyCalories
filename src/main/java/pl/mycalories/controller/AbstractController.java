@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class AbstractController<T extends AbstractModel, S extends AbstractService<T, Long>> {
 
-    private S service;
+    protected S service;
 
     public AbstractController(S service) {
         this.service = service;
@@ -21,7 +21,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
     ResponseEntity<List<T>> getAll() {
         List<T> objects = service.getAll();
 
-        return new ResponseEntity<List<T>>(HttpStatus.OK);
+        return new ResponseEntity<List<T>>(objects, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -37,7 +37,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
     ResponseEntity<T> create(@RequestBody T obj) {
         T createdObj = service.save(obj);
 
-        return new ResponseEntity<T>(HttpStatus.OK);
+        return new ResponseEntity<T>(createdObj, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -47,6 +47,15 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
         obj = service.save(obj);
 
         return new ResponseEntity<T>(obj, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    ResponseEntity<T> delete (@PathVariable Long id) {
+        T obj = service.findById(id);
+
+        service.delete(obj);
+        return new ResponseEntity<T>(HttpStatus.OK);
     }
 
 }
