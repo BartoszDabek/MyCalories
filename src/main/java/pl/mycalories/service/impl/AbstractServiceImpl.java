@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class AbstractServiceImpl<T, ID extends Serializable> implements AbstractService<T, ID> {
 
-    private JpaRepository<T, ID> repository;
+    protected JpaRepository<T, ID> repository;
 
     protected AbstractServiceImpl(JpaRepository<T, ID> repository) {
         this.repository = repository;
