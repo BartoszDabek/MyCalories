@@ -18,6 +18,38 @@ public class NutritionalValues {
     @NotNull
     private int carbs;
 
+    public NutritionalValues() {
+    }
+
+    public NutritionalValues(int calories, int proteins, int fats, int carbs) {
+        this.calories = calories;
+        this.proteins = proteins;
+        this.fats = fats;
+        this.carbs = carbs;
+    }
+
+    public NutritionalValues(Meal meal) {
+        setMealMacro(meal);
+        this.setCalories(calories);
+        this.setCarbs(carbs);
+        this.setProteins(proteins);
+        this.setFats(fats);
+    }
+
+    private void setMealMacro(Meal meal) {
+        for(ProductMeal p: meal.getProductMeals()) {
+            sumMacro(p);
+            meal.addProduct(p);
+        }
+    }
+
+    private void sumMacro(ProductMeal productMeal) {
+        this.calories += productMeal.getProduct().getNutritionalValues().getCalories() * productMeal.getAmount();
+        this.carbs += (productMeal.getProduct().getNutritionalValues().getCarbs() * productMeal.getAmount());
+        this.fats += (productMeal.getProduct().getNutritionalValues().getFats() * productMeal.getAmount());
+        this.proteins += (productMeal.getProduct().getNutritionalValues().getProteins() * productMeal.getAmount());
+    }
+
     public int getCalories() {
         return calories;
     }
@@ -54,7 +86,6 @@ public class NutritionalValues {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof NutritionalValues)) return false;
-        if (!super.equals(o)) return false;
 
         NutritionalValues that = (NutritionalValues) o;
 
