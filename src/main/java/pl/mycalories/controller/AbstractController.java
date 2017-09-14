@@ -42,7 +42,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
 
     @PutMapping("/{id}")
     public @ResponseBody
-    ResponseEntity<T> update(@PathVariable Long id, @RequestBody T obj) {
+    ResponseEntity<?> update(@PathVariable Long id, @RequestBody T obj) {
         obj.setId(id);
         obj = service.save(obj);
 
