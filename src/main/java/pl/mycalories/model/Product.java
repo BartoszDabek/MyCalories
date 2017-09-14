@@ -49,13 +49,17 @@ public class Product extends AbstractModel {
 
         Product product = (Product) o;
 
-        return name != null ? name.equals(product.name) : product.name == null;
+        if (name != null ? !name.equals(product.name) : product.name != null) return false;
+        if (category != null ? !category.equals(product.category) : product.category != null) return false;
+        return nutritionalValues != null ? nutritionalValues.equals(product.nutritionalValues) : product.nutritionalValues == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (nutritionalValues != null ? nutritionalValues.hashCode() : 0);
         return result;
     }
 }
