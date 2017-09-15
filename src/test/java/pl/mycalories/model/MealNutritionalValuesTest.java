@@ -20,7 +20,7 @@ public class MealNutritionalValuesTest {
     private Meal meal;
 
     @Before
-    public void setUp() {
+    public void init() {
         meal = new Meal();
         meal.setId(1L);
         meal.setName("test meal");
@@ -29,11 +29,33 @@ public class MealNutritionalValuesTest {
     }
 
     @Test
-    public void sumMacroTest() {
-        Assert.assertEquals(1250, meal.getNutritionalValues().getCalories());
-        Assert.assertEquals(250, meal.getNutritionalValues().getCarbs());
-        Assert.assertEquals(500, meal.getNutritionalValues().getProteins());
-        Assert.assertEquals(750, meal.getNutritionalValues().getFats());
+    public void macros_are_match() {
+        NutritionalValues expectedMacro = new NutritionalValues(1250, 500, 750, 250);
+        Assert.assertEquals(expectedMacro, meal.getNutritionalValues());
+    }
+
+    @Test
+    public void calories_are_match() {
+        int expectedCalories = 1250;
+        Assert.assertEquals(expectedCalories, meal.getNutritionalValues().getCalories());
+    }
+
+    @Test
+    public void carbs_are_match() {
+        int expectedCarbs = 250;
+        Assert.assertEquals(expectedCarbs, meal.getNutritionalValues().getCarbs());
+    }
+
+    @Test
+    public void proteins_are_match() {
+        int expectedProteins = 500;
+        Assert.assertEquals(expectedProteins, meal.getNutritionalValues().getProteins());
+    }
+
+    @Test
+    public void fats_are_match() {
+        int expectedFats = 750;
+        Assert.assertEquals(expectedFats, meal.getNutritionalValues().getFats());
     }
 
 
