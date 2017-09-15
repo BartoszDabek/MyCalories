@@ -6,102 +6,65 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import pl.mycalories.CalorieeCApplication;
+import pl.mycalories.dao.MealDao;
 import pl.mycalories.model.Meal;
-import pl.mycalories.model.NutritionalValues;
-import pl.mycalories.model.Product;
-import pl.mycalories.model.ProductMeal;
+import pl.mycalories.service.impl.MealServiceImpl;
 
-import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CalorieeCApplication.class)
 @WebAppConfiguration
-@Transactional
 public class MealServiceImplTest {
-//TODO: hibernate nextval - wywalić pobieranie podczas testów
-    @Autowired
+
     private MealService mealService;
-
     @Mock
-    private ProductService productService;
-
+    private MealDao mealDao;
+    @Mock
     private Meal meal;
+    @Mock
+    private List<Meal> meals;
 
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-
-        meal = new Meal();
-        meal.setName("Test meal");
+        mealService = new MealServiceImpl(mealDao);
     }
 
     @Test
-    public void insert_meal(){
-        String expectedName = "Test meal";
-
-        mealService.save(meal);
-        Meal dbMeal = mealService.findById(meal.getId());
-
-        Assert.assertNotNull(dbMeal);
-        Assert.assertEquals(expectedName, dbMeal.getName());
+    public void should_return_list_of_meals_when_getAll_is_called() {
+        when(mealDao.findAll()).thenReturn(meals);
+        List<Meal> retriviedMeals = mealService.getAll();
+        Assert.assertThat(retriviedMeals, is(equalTo(meals)));
     }
 
     @Test
-    public void nutritional_values_are_match_after_save() {
-        NutritionalValues expectedValue = new NutritionalValues(1000, 100, 100, 100);
-        Product product = new Product();
-        product.setNutritionalValues(new NutritionalValues(100, 10, 10, 10));
-
-        when(productService.findById(any(Long.class))).thenReturn(product);
-
-        Set<ProductMeal> productMeals = new HashSet<>();
-        ProductMeal productMeal = new ProductMeal();
-        productMeal.setAmount(10);
-        productMeal.setProduct(productService.findById(1L));
-        productMeals.add(productMeal);
-        meal.setProductMeals(productMeals);
-
-        mealService.save(meal);
-
-        Meal dbMeal = mealService.findById(meal.getId());
-        Assert.assertNotNull(dbMeal);
-        Assert.assertEquals(expectedValue, dbMeal.getNutritionalValues());
+    public void should_return_meal_when_find_by_id_is_called() {
+        when(mealDao.findOne(5L)).thenReturn(meal);
+        Meal retrievedMeal = mealService.findById(5L);
+        Assert.assertThat(retrievedMeal, is(equalTo(meal)));
     }
 
     @Test
-    public void update_meal(){
-        String updatedName = "This is an updated meal";
-
-        mealService.save(meal);
-
-        Meal updatedMeal = mealService.findById(meal.getId());
-        updatedMeal.setName(updatedName);
-        mealService.save(updatedMeal);
-
-        Meal dbMeal = mealService.findById(updatedMeal.getId());
-        Assert.assertNotNull(dbMeal);
-        Assert.assertEquals(updatedName, dbMeal.getName());
+    public void should_return_meal_when_save_is_called(){
+        when(mealDao.save(meal)).thenReturn(meal);
+        Meal savedMeal = mealService.save(meal);
+        Assert.assertThat(savedMeal, is(equalTo(meal)));
     }
 
     @Test
-    public void delete_meal(){
-        mealService.save(meal);
-
-        Meal mealToDelete = mealService.findById(meal.getId());
-        mealService.delete(mealToDelete);
-
-        Meal dbMeal = mealService.findById(mealToDelete.getId());
-        Assert.assertNull(dbMeal);
+    public void should_call_delete_method_of_mealDao_when_delete_is_called(){
+        doNothing().when(mealDao).delete(meal);
+        mealService.delete(meal);
+        verify(mealDao, times(1)).delete(meal);
     }
 
 }
