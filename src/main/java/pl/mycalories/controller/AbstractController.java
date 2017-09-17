@@ -34,10 +34,10 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
 
     @PostMapping
     public @ResponseBody
-    ResponseEntity<T> create(@RequestBody T obj) {
+    ResponseEntity<?> create(@RequestBody T obj) {
         T createdObj = service.save(obj);
 
-        return new ResponseEntity<T>(createdObj, HttpStatus.OK);
+        return new ResponseEntity<T>(createdObj, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -46,7 +46,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
         obj.setId(id);
         obj = service.save(obj);
 
-        return new ResponseEntity<T>(obj, HttpStatus.OK);
+        return new ResponseEntity<T>(obj, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
