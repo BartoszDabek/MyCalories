@@ -10,7 +10,7 @@ public class ProductMeal extends AbstractModel {
 
     private int amount;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 

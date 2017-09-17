@@ -1,7 +1,10 @@
 package pl.mycalories.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "product_id_seq", allocationSize = 1)
@@ -13,6 +16,10 @@ public class Product extends AbstractModel {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private Set<ProductMeal> productMeals;
 
     @Embedded
     private NutritionalValues nutritionalValues;
@@ -31,6 +38,14 @@ public class Product extends AbstractModel {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Set<ProductMeal> getProductMeals() {
+        return productMeals;
+    }
+
+    public void setProductMeals(Set<ProductMeal> productMeals) {
+        this.productMeals = productMeals;
     }
 
     public NutritionalValues getNutritionalValues() {
