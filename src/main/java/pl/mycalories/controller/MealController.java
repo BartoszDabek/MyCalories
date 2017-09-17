@@ -26,6 +26,20 @@ public class MealController extends AbstractController<Meal, MealService> {
     }
 
     @Override
+    @PostMapping
+    public @ResponseBody
+    ResponseEntity<?> create(@RequestBody Meal meal) {
+        ErrorInformation errorInformation = mealServiceError.checkIfProductsAreModified(meal);
+
+        if(errorInformation.getHttpStatus() != HttpStatus.OK) {
+            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getHttpStatus());
+        }
+
+        Meal createdMeal = service.save(meal);
+        return new ResponseEntity<Meal>(createdMeal, HttpStatus.OK);
+    }
+
+    @Override
     @PutMapping("/{id}")
     public @ResponseBody
     ResponseEntity<?> update(@PathVariable Long id, @RequestBody Meal meal) {
@@ -37,7 +51,6 @@ public class MealController extends AbstractController<Meal, MealService> {
 
         meal.setId(id);
         meal = service.save(meal);
-
         return new ResponseEntity<Meal>(meal, HttpStatus.OK);
     }
 }
