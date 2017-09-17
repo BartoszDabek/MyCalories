@@ -25,11 +25,6 @@ public class Meal extends AbstractModel {
 //    @JoinColumn(name = "daily_calories_id")
 //    private DailyCalories dailyCalories;
 
-    public void addProduct(ProductMeal productMeal) {
-        productMeals.add(productMeal);
-        productMeal.setMeal(this);
-    }
-
     public String getName() {
         return name;
     }

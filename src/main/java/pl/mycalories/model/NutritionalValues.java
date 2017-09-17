@@ -39,7 +39,6 @@ public class NutritionalValues {
     private void setMealMacro(Meal meal) {
         for(ProductMeal p: meal.getProductMeals()) {
             sumMacro(p);
-            meal.addProduct(p);
         }
     }
 
