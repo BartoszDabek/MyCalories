@@ -1,5 +1,6 @@
 package pl.mycalories.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -21,9 +22,10 @@ public class Meal extends AbstractModel {
     @JsonManagedReference
     private Set<ProductMeal> productMeals = new HashSet<ProductMeal>();
 
-//    @ManyToOne
-//    @JoinColumn(name = "daily_calories_id")
-//    private DailyCalories dailyCalories;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = DailyCalories.class)
+    @JoinColumn(name = "daily_calories_id")
+    @JsonBackReference
+    private DailyCalories dailyCalories;
 
     public String getName() {
         return name;
@@ -49,13 +51,13 @@ public class Meal extends AbstractModel {
         this.productMeals = productMeals;
     }
 
-//    public DailyCalories getDailyCalories() {
-//        return dailyCalories;
-//    }
-//
-//    public void setDailyCalories(DailyCalories dailyCalories) {
-//        this.dailyCalories = dailyCalories;
-//    }
+    public DailyCalories getDailyCalories() {
+        return dailyCalories;
+    }
+
+    public void setDailyCalories(DailyCalories dailyCalories) {
+        this.dailyCalories = dailyCalories;
+    }
 
 
     @Override
@@ -66,13 +68,15 @@ public class Meal extends AbstractModel {
 
         Meal meal = (Meal) o;
 
-        return name != null ? name.equals(meal.name) : meal.name == null;
+        if (name != null ? !name.equals(meal.name) : meal.name != null) return false;
+        return nutritionalValues != null ? nutritionalValues.equals(meal.nutritionalValues) : meal.nutritionalValues == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (nutritionalValues != null ? nutritionalValues.hashCode() : 0);
         return result;
     }
 }
