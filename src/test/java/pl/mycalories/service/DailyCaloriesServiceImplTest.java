@@ -39,32 +39,33 @@ public class DailyCaloriesServiceImplTest {
         NutritionalValues expectedNutritionalValues = new NutritionalValues(2000, 200, 200, 200);
         int expectedCalories = 2000;
 
-        Product product = new Product();
-        product.setNutritionalValues(new NutritionalValues(100, 10, 10, 10));
-
-        ProductMeal productMeal = new ProductMeal();
-        productMeal.setAmount(10);
-        productMeal.setProduct(product);
-
-        Meal meal = new Meal();
-        meal.setId(1L);
-        meal.setProductMeals(new HashSet<>());
-        meal.getProductMeals().add(productMeal);
-
-        Meal meal1 = new Meal();
-        meal1.setId(2L);
-        meal1.setProductMeals(new HashSet<>());
-        meal1.getProductMeals().add(productMeal);
-
         DailyCalories dailyCalories = new DailyCalories();
         dailyCalories.setMeals(new HashSet<>());
-        dailyCalories.getMeals().add(meal);
-        dailyCalories.getMeals().add(meal1);
+        dailyCalories.getMeals().add(addNewMeal(1L));
+        dailyCalories.getMeals().add(addNewMeal(2L));
 
         when(dailyCaloriesDao.save(dailyCalories)).thenReturn(dailyCalories);
         DailyCalories savedDailyCalories = dailyCaloriesService.save(dailyCalories);
         Assert.assertEquals(expectedNutritionalValues, savedDailyCalories.getNutritionalValues());
         Assert.assertEquals(expectedCalories, savedDailyCalories.getNutritionalValues().getCalories());
+    }
+
+    @Test
+    public void should_Set_Meal_NutritionalValues_When_Save_Is_Called() {
+        NutritionalValues expectedNutritionalValues = new NutritionalValues(1000, 100, 100, 100);
+        int expectedCalories = 1000;
+
+        DailyCalories dailyCalories = new DailyCalories();
+        dailyCalories.setMeals(new HashSet<>());
+        dailyCalories.getMeals().add(addNewMeal(1L));
+
+        when(dailyCaloriesDao.save(dailyCalories)).thenReturn(dailyCalories);
+        DailyCalories savedDailyCalories = dailyCaloriesService.save(dailyCalories);
+
+        for(Meal meal: savedDailyCalories.getMeals()){
+            Assert.assertEquals(expectedNutritionalValues, meal.getNutritionalValues());
+            Assert.assertEquals(expectedCalories, meal.getNutritionalValues().getCalories());
+        }
     }
 
     @Test
@@ -88,5 +89,25 @@ public class DailyCaloriesServiceImplTest {
         Assert.assertEquals(expectedDate, savedDailyCalories.getDate());
     }
 
+    private Meal addNewMeal(Long id) {
+        Meal meal = new Meal();
+        meal.setId(id);
+        meal.setProductMeals(new HashSet<>());
+        meal.getProductMeals().add(addNewProductMeal());
+        return meal;
+    }
+
+    private ProductMeal addNewProductMeal() {
+        ProductMeal productMeal = new ProductMeal();
+        productMeal.setAmount(10);
+        productMeal.setProduct(addNewProduct());
+        return productMeal;
+    }
+
+    private Product addNewProduct() {
+        Product product = new Product();
+        product.setNutritionalValues(new NutritionalValues(100, 10, 10, 10));
+        return product;
+    }
 
 }
