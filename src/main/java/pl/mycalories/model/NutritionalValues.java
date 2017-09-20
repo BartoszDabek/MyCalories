@@ -36,6 +36,16 @@ public class NutritionalValues {
         this.setFats(fats);
     }
 
+    public NutritionalValues(DailyCalories dailyCalories) {
+        for(Meal meal: dailyCalories.getMeals()) {
+            setMealMacro(meal);
+        }
+        this.setCalories(calories);
+        this.setCarbs(carbs);
+        this.setProteins(proteins);
+        this.setFats(fats);
+    }
+
     private void setMealMacro(Meal meal) {
         for(ProductMeal p: meal.getProductMeals()) {
             sumMacro(p);
