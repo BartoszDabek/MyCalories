@@ -5,20 +5,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import pl.mycalories.CalorieeCApplication;
-import pl.mycalories.dao.ProductDao;
 import pl.mycalories.model.Meal;
 import pl.mycalories.model.NutritionalValues;
 import pl.mycalories.model.Product;
 import pl.mycalories.model.ProductMeal;
-import pl.mycalories.service.MealServiceError;
 import pl.mycalories.service.ProductService;
-import pl.mycalories.service.impl.MealServiceErrorImpl;
+import pl.mycalories.service.impl.ErrorServiceImpl;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
@@ -27,10 +24,10 @@ import static org.mockito.Mockito.verify;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = CalorieeCApplication.class)
 @WebAppConfiguration
-public class MealServiceErrorTest {
+public class ErrorServiceTest {
 
     @InjectMocks
-    private MealServiceErrorImpl mealServiceErrorMock;
+    private ErrorServiceImpl errorService;
     private Product originalProduct;
     private Product testedProduct;
     private Meal meal;
@@ -64,7 +61,7 @@ public class MealServiceErrorTest {
     public void should_return_status_OK_200_because_product_is_not_modified() {
         HttpStatus expectedStatus = HttpStatus.OK;
         Mockito.when(productService.findById(any(Long.class))).thenReturn(originalProduct);
-        ErrorInformation errorInformation = mealServiceErrorMock.checkIfProductsAreModified(meal);
+        ErrorInformation errorInformation = errorService.checkIfProductsAreModified(meal);
         Assert.assertEquals(expectedStatus, errorInformation.getHttpStatus());
     }
 
@@ -74,7 +71,7 @@ public class MealServiceErrorTest {
         testedProduct.setNutritionalValues(new NutritionalValues(100, 30, 30, 10));
 
         Mockito.when(productService.findById(any(Long.class))).thenReturn(testedProduct);
-        ErrorInformation errorInformation = mealServiceErrorMock.checkIfProductsAreModified(meal);
+        ErrorInformation errorInformation = errorService.checkIfProductsAreModified(meal);
         verify(productService, times(1)).findById(any(Long.class));
         Assert.assertEquals(expectedStatus, errorInformation.getHttpStatus());
     }
@@ -85,7 +82,7 @@ public class MealServiceErrorTest {
         testedProduct.setName("New product name");
 
         Mockito.when(productService.findById(any(Long.class))).thenReturn(testedProduct);
-        ErrorInformation errorInformation = mealServiceErrorMock.checkIfProductsAreModified(meal);
+        ErrorInformation errorInformation = errorService.checkIfProductsAreModified(meal);
         verify(productService, times(1)).findById(any(Long.class));
         Assert.assertEquals(expectedStatus, errorInformation.getHttpStatus());
     }
@@ -96,7 +93,7 @@ public class MealServiceErrorTest {
         testedProduct.setNutritionalValues(null);
 
         Mockito.when(productService.findById(any(Long.class))).thenReturn(testedProduct);
-        ErrorInformation errorInformation = mealServiceErrorMock.checkIfProductsAreModified(meal);
+        ErrorInformation errorInformation = errorService.checkIfProductsAreModified(meal);
         verify(productService, times(1)).findById(any(Long.class));
         Assert.assertEquals(expectedStatus, errorInformation.getHttpStatus());
     }

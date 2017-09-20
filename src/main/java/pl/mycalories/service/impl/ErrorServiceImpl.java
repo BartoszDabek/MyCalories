@@ -7,11 +7,11 @@ import pl.mycalories.error.MealErrors;
 import pl.mycalories.model.Meal;
 import pl.mycalories.model.Product;
 import pl.mycalories.model.ProductMeal;
-import pl.mycalories.service.MealServiceError;
+import pl.mycalories.service.ErrorService;
 import pl.mycalories.service.ProductService;
 
 @Service
-public class MealServiceErrorImpl implements MealServiceError {
+public class ErrorServiceImpl implements ErrorService {
 
     private ProductService productService;
 
