@@ -46,7 +46,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
         obj.setId(id);
         obj = service.save(obj);
 
-        return new ResponseEntity<T>(obj, HttpStatus.CREATED);
+        return new ResponseEntity<T>(obj, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
