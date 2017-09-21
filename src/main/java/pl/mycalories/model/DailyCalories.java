@@ -24,8 +24,9 @@ public class DailyCalories extends AbstractModel{
     @JsonManagedReference
     private Set<Meal> meals = new HashSet<Meal>();
 
-//    @OneToMany(mappedBy = "calories", fetch = FetchType.EAGER)
-//    private Set<UserDailyCalories> userDailyCalories;
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Date getDate() {
         return date;
@@ -51,14 +52,13 @@ public class DailyCalories extends AbstractModel{
         this.meals = meals;
     }
 
-//    public Set<UserDailyCalories> getUserDailyCalories() {
-//        return userDailyCalories;
-//    }
-//
-//    public void setUserDailyCalories(Set<UserDailyCalories> userDailyCalories) {
-//        this.userDailyCalories = userDailyCalories;
-//    }
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -71,7 +71,8 @@ public class DailyCalories extends AbstractModel{
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
         if (nutritionalValues != null ? !nutritionalValues.equals(that.nutritionalValues) : that.nutritionalValues != null)
             return false;
-        return meals != null ? meals.equals(that.meals) : that.meals == null;
+        if (meals != null ? !meals.equals(that.meals) : that.meals != null) return false;
+        return user != null ? user.equals(that.user) : that.user == null;
     }
 
     @Override
@@ -80,6 +81,7 @@ public class DailyCalories extends AbstractModel{
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (nutritionalValues != null ? nutritionalValues.hashCode() : 0);
         result = 31 * result + (meals != null ? meals.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
 }
