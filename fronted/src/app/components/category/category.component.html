@@ -1,0 +1,31 @@
+<div class="form-wrapper center">
+    <form class="form-inline" (submit)="addCategory()">
+        <label class="sr-only" for="inlineFormInput">Name</label>
+        <input type="text" [(ngModel)]="category" name="category" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput" placeholder="Category name">
+
+        <button type="submit" class="btn btn-primary">Add new Category</button>
+    </form>
+</div>
+
+{{cat}}
+
+<div class="data-wrapper">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Category name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let category of categories; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ category.name }}</td>
+                <td class="mv-right">
+                    <button class="btn btn-danger" (click)="deleteCategory(category)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
