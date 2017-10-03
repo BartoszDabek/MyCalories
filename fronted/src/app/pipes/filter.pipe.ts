@@ -8,7 +8,7 @@ export class FilterPipe implements PipeTransform {
   transform(values: any, args?: any): any {
     if (args === undefined) return values;
     return values.filter(function(value) {
-      return value.name.toLowerCase().includes(args.toLowerCase());
+      return value.name.toLowerCase().includes(typeof args === 'string' ? args.toLowerCase() : args.name.toLowerCase());
     })
   }
 

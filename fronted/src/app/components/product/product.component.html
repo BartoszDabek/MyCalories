@@ -1,15 +1,11 @@
 <div class="form-wrapper center">
-    <!-- <ng-template #rt let-r="result" let-t="term">
+    <ng-template #rt let-r="result" let-t="term">
         {{ r.name}}
     </ng-template>
-    
-    <input id="typeahead-template" type="text" class="form-control" [(ngModel)]="model" [ngbTypeahead]="search" [resultTemplate]="rt"
-        [inputFormatter]="formatter" placeholder="Search"/> -->
-    <form id="filter">
-        <input type="text" [(ngModel)]="term" [ngModelOptions]="{standalone: true}" />
-    </form>
-    </div>
 
+    <input id="typeahead-template" type="text" class="form-control" [(ngModel)]="term" [ngbTypeahead]="search" [resultTemplate]="rt"
+        [inputFormatter]="formatter" placeholder="Search product"/>
+</div>
 
 <div class="data-wrapper">
     <table class="table">
