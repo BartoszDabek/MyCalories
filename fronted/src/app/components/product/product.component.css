@@ -1,0 +1,19 @@
+.form-wrapper {
+    margin-bottom: 5em;
+    width:70em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.mv-right {
+    text-align: right;
+}
+
+.form-control { 
+    width: 300px; 
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../../services/category.service';
+import { CategoryInterface } from '../../interfaces/category';
 
 @Component({
   selector: 'app-category',
@@ -7,22 +8,20 @@ import { CategoryService } from '../../services/category.service';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-  categories: Category[];
+  private categories: CategoryInterface[];
   private category: string;
 
-  constructor(private categoryService: CategoryService) {
-    console.log('constructor of category component');
-  }
+  constructor(private categoryService: CategoryService) { }
 
   ngOnInit() {
-    console.log('ngInit of category component');
     this.categoryService.getCategories().subscribe((categories) => {
       this.categories = categories;
     });
   }
 
   addCategory() {
-    if (this.category !== undefined) {
+    console.log('kategoria = ' + this.category);
+    if (this.categoryIsFilled()) {
       this.categoryService.addCategory(this.category).subscribe(
         res => {
           this.category = "";
@@ -35,11 +34,12 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-  deleteCategory(category: Category) {
+  
+  deleteCategory(category: CategoryInterface) {
     for (let i = 0; i < this.categories.length; i++) {
       if (this.categories[i] == category) {
         this.categoryService.deleteCategory(category.id)
-          .subscribe(
+        .subscribe(
           res => {
             this.categories.splice(i, 1);
             console.log(res);
@@ -47,14 +47,13 @@ export class CategoryComponent implements OnInit {
           err => {
             console.log("Error occured");
           }
-          );
+        );
       }
     }
   }
+  
+  private categoryIsFilled() {
+    return this.category !== undefined && this.category !== "";
+  }
 
-}
-
-interface Category {
-  id: number,
-  name: string
 }

@@ -7,9 +7,7 @@ import 'rxjs/add/operator/map';
 
 export class CategoryService {
 
-  constructor(public http: Http) {
-    console.log('Category service connected...');
-  }
+  constructor(public http: Http) { }
 
   getCategories() {
       return this.http.get('http://localhost:8080/category')
