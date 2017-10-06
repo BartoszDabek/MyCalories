@@ -1,0 +1,24 @@
+<div class="data-wrapper" *ngIf="product">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product name</th>
+        <th>Category</th>
+        <th>kcal/100g</th>
+        <th>proteins/100g</th>
+        <th>fats/100g</th>
+        <th>carbs/100g</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{product.name}}</td>
+        <td>{{product.category.name}}</td>
+        <td>{{product.nutritionalValues.calories}}</td>
+        <td>{{product.nutritionalValues.proteins}}</td>
+        <td>{{product.nutritionalValues.fats}}</td>
+        <td>{{product.nutritionalValues.carbs}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

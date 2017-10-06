@@ -20,7 +20,7 @@ export class CategoryComponent implements OnInit {
   }
 
   addCategory() {
-    console.log('kategoria = ' + this.category);
+    this.category = this.category.trim();
     if (this.categoryIsFilled()) {
       this.categoryService.addCategory(this.category).subscribe(
         res => {
