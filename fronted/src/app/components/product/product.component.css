@@ -17,3 +17,8 @@
 .form-control { 
     width: 250px; 
 }
+
+i {
+    font-size: 20px;
+    margin-left: 10px;
+}

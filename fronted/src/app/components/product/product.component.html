@@ -12,17 +12,27 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Product name</th>
+                <th (click)="setSortBy('name')">Product name
+                    <i class="fa fa-sort" *ngIf="sortName != 'name'" (click)="reverseSorting()"></i>
+                    <i class="fa fa-sort-desc" *ngIf="!reverseSort && sortName === 'name'" (click)="reverseSorting()"></i>
+                    <i class="fa fa-sort-asc" *ngIf="reverseSort && sortName === 'name'" (click)="reverseSorting()"></i>
+                </th>
                 <th>Calories</th>
-                <th>Category</th>
+                <th (click)="setSortBy('category.name')">Category  
+                    <i class="fa fa-sort" *ngIf="sortName != 'category.name'" (click)="reverseSorting()"></i>
+                    <i class="fa fa-sort-desc" *ngIf="!reverseSort && sortName === 'category.name'" (click)="reverseSorting()"></i>
+                    <i class="fa fa-sort-asc" *ngIf="reverseSort && sortName === 'category.name'" (click)="reverseSorting()"></i>
+                </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let product of products | filter:term; let i = index">
+            <tr *ngFor="let product of products | filter:term | orderBy: sortName : reverseSort; let i = index">
                 <th scope="row">{{ i + 1 }}</th>
                 <td>{{ product.name }}</td>
                 <td>{{ product.nutritionalValues.calories }}</td>
                 <td>{{ product.category.name }}</td>
+                <td><a routerLink="/products/{{product.id}}">DETAILS --></a></td>
             </tr>
         </tbody>
     </table>
