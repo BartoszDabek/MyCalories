@@ -5,11 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import pl.mycalories.model.Meal;
 import pl.mycalories.model.NutritionalValues;
-import pl.mycalories.model.Product;
 import pl.mycalories.model.ProductMeal;
 import pl.mycalories.service.MealService;
-import pl.mycalories.service.MealServiceError;
-import pl.mycalories.service.ProductService;
 
 import java.util.Iterator;
 

@@ -7,17 +7,19 @@ import org.springframework.web.bind.annotation.*;
 import pl.mycalories.error.ErrorInformation;
 import pl.mycalories.model.Meal;
 import pl.mycalories.service.MealService;
-import pl.mycalories.service.MealServiceError;
+import pl.mycalories.service.ErrorService;
 
 @RestController
 @RequestMapping("/meal")
 public class MealController extends AbstractController<Meal, MealService> {
-
-    private MealServiceError mealServiceError;
+//TODO: ZMIENIC ENDPOINT'Y -- DOSTEP DO MEAL PRZEZ /dailyCalories/{id}/meal ??  USUNĄC post/update/delete bezposrednio na mealu
+    // TODO: lub przez /user/{userName}/dailyCalories/{id}/meal    ??
+    private ErrorService errorService;
+    private ErrorInformation errorInformation;
 
     @Autowired
-    public void setMealServiceError(MealServiceError mealServiceError) {
-        this.mealServiceError = mealServiceError;
+    public void setErrorService(ErrorService errorService) {
+        this.errorService = errorService;
     }
 
     @Autowired
@@ -29,28 +31,29 @@ public class MealController extends AbstractController<Meal, MealService> {
     @PostMapping
     public @ResponseBody
     ResponseEntity<?> create(@RequestBody Meal meal) {
-        ErrorInformation errorInformation = mealServiceError.checkIfProductsAreModified(meal);
-
-        if(errorInformation.getHttpStatus() != HttpStatus.OK) {
+        if(errorOccurs(meal)) {
             return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getHttpStatus());
         }
 
-        Meal createdMeal = service.save(meal);
-        return new ResponseEntity<Meal>(createdMeal, HttpStatus.OK);
+        return super.create(meal);
     }
 
     @Override
     @PutMapping("/{id}")
     public @ResponseBody
     ResponseEntity<?> update(@PathVariable Long id, @RequestBody Meal meal) {
-        ErrorInformation errorInformation = mealServiceError.checkIfProductsAreModified(meal);
-
-        if(errorInformation.getHttpStatus() != HttpStatus.OK) {
+        if(errorOccurs(meal)) {
             return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getHttpStatus());
         }
 
-        meal.setId(id);
-        meal = service.save(meal);
-        return new ResponseEntity<Meal>(meal, HttpStatus.OK);
+        return super.update(id, meal);
+    }
+
+    private boolean errorOccurs(Meal meal) {
+        errorInformation = errorService.checkIfProductsAreModified(meal);
+        if(errorInformation.getHttpStatus() != HttpStatus.OK) {
+            return true;
+        }
+        return false;
     }
 }
