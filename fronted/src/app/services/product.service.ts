@@ -11,4 +11,9 @@ export class ProductService {
     return this.http.get('http://localhost:8080/product')
       .map(res => res.json());
   }
+
+  findById(id: number) {
+    return this.http.get('http://localhost:8080/product/' + id)
+      .map(res => res.json());
+  }
 }
