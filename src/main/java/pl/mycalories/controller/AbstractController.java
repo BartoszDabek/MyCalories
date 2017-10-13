@@ -55,7 +55,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
         T obj = service.findById(id);
 
         service.delete(obj);
-        return new ResponseEntity<T>(HttpStatus.OK);
+        return new ResponseEntity<T>(HttpStatus.NO_CONTENT);
     }
 
 }
