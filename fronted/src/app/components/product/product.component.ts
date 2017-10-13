@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { ProductInterface } from '../../interfaces/product';
+import { DataService } from '../../services/data-service.service'
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
-
-import { ProductService } from '../../services/product.service';
-import { ProductInterface } from '../../interfaces/product';
 
 @Component({
   selector: 'app-product',
@@ -12,25 +11,30 @@ import { ProductInterface } from '../../interfaces/product';
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
-  products: ProductInterface[];
-  sortName: string;
-  reverseSort: boolean;
-  product: ProductInterface;
+  private apiEndPoint: string = 'product/';
+  private products: ProductInterface[];
+  private product: ProductInterface;
+  private reverseSort: boolean;
+  private sortName: string;
 
-  constructor(private productService: ProductService ) { }
+  constructor(private _dataService: DataService ) { }
 
   ngOnInit() {
-    this.productService.getProducts()
-      .subscribe((response) => {
-        this.products = response;
-        for(let i=0; i<response.length; i++) {
-          this.products[i].name = this.capitalizeFirstLetterAndLowerCaseOthers(this.products[i].name);
-          this.products[i].category.name = this.capitalizeFirstLetterAndLowerCaseOthers(this.products[i].category.name);
-        }
-      });
+      this._dataService.getAll<ProductInterface[]>(this.apiEndPoint)
+        .subscribe(
+          res => {
+            this.products = res;
+            for(let i=0; i<res.length; i++) {
+              this.products[i].name = this.capitalizeFirstLetterAndLowerCaseOthers(this.products[i].name);
+              this.products[i].category.name = this.capitalizeFirstLetterAndLowerCaseOthers(this.products[i].category.name);
+            }
+          },
+          err => {
+              console.log("error in get_all product component");
+          });
   }
 
-  capitalizeFirstLetterAndLowerCaseOthers(name: string) {
+  private capitalizeFirstLetterAndLowerCaseOthers(name: string) {
     return name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   }
 

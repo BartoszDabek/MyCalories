@@ -4,23 +4,27 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { CategoryComponent } from './components/category/category.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProductComponent } from './components/product/product.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { AddProductComponent } from './components/product/add-product/add-product.component';
 
-
-import { CategoryService } from './services/category.service';
-import { ProductService } from './services/product.service';
+import { Configuration } from './app.constants'
+import { DataService, CustomInterceptor } from './services/data-service.service'
 import { FilterPipe } from './pipes/filter.pipe';
 import { OrderModule } from 'ngx-order-pipe';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'category', component: CategoryComponent },
   { path: 'products', component: ProductComponent },
+  { path: 'products/add-product', component: AddProductComponent },
   { path: 'products/:id', component: ProductDetailsComponent }
 ];
 
@@ -31,17 +35,24 @@ const appRoutes: Routes = [
     CategoryComponent,
     HomeComponent,
     ProductComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    AddProductComponent
   ],
   imports: [
     NgbModule.forRoot(),
     BrowserModule,
+    HttpClientModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
     OrderModule
   ],
-  providers: [CategoryService, ProductService],
+  providers: [Configuration, DataService, 
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomInterceptor,
+      multi: true,
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

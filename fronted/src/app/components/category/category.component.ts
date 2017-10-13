@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryService } from '../../services/category.service';
 import { CategoryInterface } from '../../interfaces/category';
+import { DataService } from '../../services/data-service.service'
 
 @Component({
   selector: 'app-category',
@@ -8,52 +8,61 @@ import { CategoryInterface } from '../../interfaces/category';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
+  private apiEndPoint: string = 'category/';
+  private categoryNameInput: string;
   private categories: CategoryInterface[];
-  private category: string;
 
-  constructor(private categoryService: CategoryService) { }
+  constructor(private _dataService: DataService) { }
 
   ngOnInit() {
-    this.categoryService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-    });
-  }
-
-  addCategory() {
-    this.category = this.category.trim();
-    if (this.categoryIsFilled()) {
-      this.categoryService.addCategory(this.category).subscribe(
+    this._dataService.getAll<CategoryInterface[]>(this.apiEndPoint)
+      .subscribe(
         res => {
-          this.category = "";
-          this.categories.push(res);
-          console.log(res);
+          this.categories = res;
         },
         err => {
-          console.log("Error occured");
+            console.log("error in get_all category component");
         });
+  }
+
+  private addCategory() {
+    if (this.categoryIsFilled()) {
+        this._dataService.add<CategoryInterface>(this.apiEndPoint, { 
+          name: this.categoryNameInput 
+        })
+        .subscribe(
+          res => {
+            this.categoryNameInput = "";
+            this.categories.push(res);
+          },
+          err => {
+            console.log("Error occurd in add_category category.component");
+          });
     }
   }
 
   
   deleteCategory(category: CategoryInterface) {
     for (let i = 0; i < this.categories.length; i++) {
-      if (this.categories[i] == category) {
-        this.categoryService.deleteCategory(category.id)
-        .subscribe(
-          res => {
-            this.categories.splice(i, 1);
-            console.log(res);
-          },
-          err => {
-            console.log("Error occured");
-          }
-        );
+      if (this.categories[i] === category) {
+        this._dataService.delete<CategoryInterface>(this.apiEndPoint, category.id)
+          .subscribe(
+            res => {
+              this.categories.splice(i, 1);
+            },
+            err => {
+              console.log("Error occurd in delete_category category.component");
+            });
       }
     }
   }
   
   private categoryIsFilled() {
-    return this.category !== undefined && this.category !== "";
+    if(this.categoryNameInput !== undefined) {
+      this.categoryNameInput = this.categoryNameInput.trim();
+      return this.categoryNameInput !== "";
+    }
+    return false;
   }
 
 }

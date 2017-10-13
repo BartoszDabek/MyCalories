@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-import { ProductService } from '../../services/product.service';
+import { DataService } from '../../services/data-service.service'
 import { ProductInterface } from '../../interfaces/product';
 
 @Component({
@@ -10,19 +9,24 @@ import { ProductInterface } from '../../interfaces/product';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent implements OnInit {
+  private apiEndPoint: string = 'product/';
   private product: ProductInterface;
   private sub:any;
 
-  constructor(private productService: ProductService, private route: ActivatedRoute) { }
+  constructor(private _dataService: DataService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       let id = params['id'];
 
-      this.productService.findById(id)
-      .subscribe((response) => {
-        this.product = response;
-      })
+      this._dataService.getSingle<ProductInterface>(this.apiEndPoint, id)
+        .subscribe(
+          res => {
+            this.product = res;
+          },
+          err => {
+              console.log("error in get_single product-details component");
+          });
     })
   }
 

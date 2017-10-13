@@ -38,6 +38,15 @@ body {
   font-weight: bold;
 }
 
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritance from `body` */
+  background-color: #fff;
+  border: .05rem solid #fff;
+}
+
 
 @media (min-width: 40em) {
   /* Pull out the header and footer */
