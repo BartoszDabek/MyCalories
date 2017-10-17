@@ -7,16 +7,16 @@ import javax.validation.constraints.NotNull;
 public class NutritionalValues {
 
     @NotNull
-    private int calories;
+    private Integer calories;
 
     @NotNull
-    private int proteins;
+    private Integer proteins;
 
     @NotNull
-    private int fats;
+    private Integer fats;
 
     @NotNull
-    private int carbs;
+    private Integer carbs;
 
     public NutritionalValues() {
     }
