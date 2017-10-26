@@ -1,11 +1,8 @@
 package pl.mycalories.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,28 +10,18 @@ import java.util.Set;
 @SequenceGenerator(name = "idgen", sequenceName = "public.daily_calories_id_seq", allocationSize = 1)
 public class DailyCalories extends AbstractModel{
 
-    @Column
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private Date date;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "day_id")
+    @JsonManagedReference
+    private Day day;
 
     @Embedded
     private NutritionalValues nutritionalValues;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "dailyCalories", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private Set<Meal> meals = new HashSet<Meal>();
-
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
+    private Set<Meal> meals;
 
     public NutritionalValues getNutritionalValues() {
         return nutritionalValues;
@@ -42,6 +29,14 @@ public class DailyCalories extends AbstractModel{
 
     public void setNutritionalValues(NutritionalValues nutritionalValues) {
         this.nutritionalValues = nutritionalValues;
+    }
+
+    public Day getDay() {
+        return day;
+    }
+
+    public void setDay(Day day) {
+        this.day = day;
     }
 
     public Set<Meal> getMeals() {
@@ -52,14 +47,6 @@ public class DailyCalories extends AbstractModel{
         this.meals = meals;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,20 +55,18 @@ public class DailyCalories extends AbstractModel{
 
         DailyCalories that = (DailyCalories) o;
 
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (day != null ? !day.equals(that.day) : that.day != null) return false;
         if (nutritionalValues != null ? !nutritionalValues.equals(that.nutritionalValues) : that.nutritionalValues != null)
             return false;
-        if (meals != null ? !meals.equals(that.meals) : that.meals != null) return false;
-        return user != null ? user.equals(that.user) : that.user == null;
+        return meals != null ? meals.equals(that.meals) : that.meals == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (day != null ? day.hashCode() : 0);
         result = 31 * result + (nutritionalValues != null ? nutritionalValues.hashCode() : 0);
         result = 31 * result + (meals != null ? meals.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
 }

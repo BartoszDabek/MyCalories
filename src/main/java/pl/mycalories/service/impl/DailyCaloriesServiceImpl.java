@@ -31,9 +31,9 @@ public class DailyCaloriesServiceImpl extends AbstractServiceImpl<DailyCalories,
     }
 // TODO: a co jak ktoś z palca wbije date wysylajac JSON'a ?? !!
     private void setNewDate() {
-        if(dailyCalories.getDate() == null) {
-            dailyCalories.setDate(new Date());
-        }
+//        if(dailyCalories.getDate() == null) {
+//            dailyCalories.setDate(new Date());
+//        }
     }
 
     private void setMealsNutritionalValues() {

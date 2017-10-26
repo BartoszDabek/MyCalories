@@ -29,7 +29,7 @@ public class User extends AbstractModel{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private Set<DailyCalories> dailyCalories;
+    private Set<Day> days;
 
     public String getUsername() {
         return username;
@@ -63,12 +63,12 @@ public class User extends AbstractModel{
         this.roles = roles;
     }
 
-    public Set<DailyCalories> getDailyCalories() {
-        return dailyCalories;
+    public Set<Day> getDays() {
+        return days;
     }
 
-    public void setDailyCalories(Set<DailyCalories> dailyCalories) {
-        this.dailyCalories = dailyCalories;
+    public void setDays(Set<Day> days) {
+        this.days = days;
     }
 
     @Override

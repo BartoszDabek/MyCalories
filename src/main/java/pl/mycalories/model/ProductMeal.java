@@ -3,12 +3,14 @@ package pl.mycalories.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "product_meal_id_seq", allocationSize = 1)
 public class ProductMeal extends AbstractModel {
 
-    private int amount;
+    @NotNull
+    private Integer amount;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -19,11 +21,11 @@ public class ProductMeal extends AbstractModel {
     @JsonBackReference
     private Meal meal;
 
-    public int getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
