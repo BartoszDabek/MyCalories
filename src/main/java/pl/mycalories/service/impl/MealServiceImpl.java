@@ -3,6 +3,7 @@ package pl.mycalories.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import pl.mycalories.dao.MealDao;
 import pl.mycalories.model.Meal;
 import pl.mycalories.model.NutritionalValues;
 import pl.mycalories.model.ProductMeal;
@@ -11,10 +12,11 @@ import pl.mycalories.service.MealService;
 import java.util.Iterator;
 
 @Service
-public class MealServiceImpl extends AbstractServiceImpl<Meal, Long> implements MealService {
+public class MealServiceImpl extends AbstractServiceImpl<Meal, Long, MealDao>
+        implements MealService {
 
     @Autowired
-    public MealServiceImpl(JpaRepository<Meal, Long> repository) {
+    public MealServiceImpl(MealDao repository) {
         super(repository);
     }
 

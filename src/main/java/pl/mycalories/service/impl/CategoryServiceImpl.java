@@ -6,18 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import pl.mycalories.common.NameConverter;
+import pl.mycalories.dao.CategoryDao;
 import pl.mycalories.model.Category;
 import pl.mycalories.service.CategoryService;
 
 import java.util.UnknownFormatConversionException;
 
 @Service
-public class CategoryServiceImpl extends AbstractServiceImpl<Category, Long> implements CategoryService {
+public class CategoryServiceImpl extends AbstractServiceImpl<Category, Long, CategoryDao>
+        implements CategoryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     @Autowired
-    public CategoryServiceImpl(JpaRepository<Category, Long> repository) {
+    public CategoryServiceImpl(CategoryDao repository) {
         super(repository);
     }
 

@@ -6,11 +6,12 @@ import pl.mycalories.service.AbstractService;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class AbstractServiceImpl<T, ID extends Serializable> implements AbstractService<T, ID> {
+public abstract class AbstractServiceImpl<T, ID extends Serializable, U extends JpaRepository<T, ID>>
+        implements AbstractService<T, ID> {
 
-    protected JpaRepository<T, ID> repository;
+    protected U repository;
 
-    protected AbstractServiceImpl(JpaRepository<T, ID> repository) {
+    protected AbstractServiceImpl(U repository) {
         this.repository = repository;
     }
 
