@@ -1,0 +1,13 @@
+.hide-overflow {
+    overflow: hidden;
+}
+
+label {
+    font-size: 18px;
+}
+
+.button-create {
+    margin-top: 2em;
+    margin-right: 1em;
+    text-align: right;
+}

@@ -47,6 +47,11 @@ body {
   border: .05rem solid #fff;
 }
 
+.center {
+    display: flex;
+    justify-content: center;
+}
+
 
 @media (min-width: 40em) {
   /* Pull out the header and footer */

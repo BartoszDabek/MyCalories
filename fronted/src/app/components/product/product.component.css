@@ -5,11 +5,6 @@
     margin-right: auto;
 }
 
-.center {
-    display: flex;
-    justify-content: center;
-}
-
 .mv-right {
     text-align: right;
 }
