@@ -15,17 +15,20 @@ import { AddProductComponent } from './components/product/add-product/add-produc
 
 import { Configuration } from './app.constants'
 import { DataService, CustomInterceptor } from './services/data-service.service'
+import { LoginService } from './services/login-service.service'
 import { FilterPipe } from './pipes/filter.pipe';
 import { OrderModule } from 'ngx-order-pipe';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoginComponent } from './components/login/login.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'category', component: CategoryComponent },
   { path: 'products', component: ProductComponent },
   { path: 'products/add-product', component: AddProductComponent },
-  { path: 'products/:id', component: ProductDetailsComponent }
+  { path: 'products/:id', component: ProductDetailsComponent },
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({
@@ -36,7 +39,8 @@ const appRoutes: Routes = [
     HomeComponent,
     ProductComponent,
     ProductDetailsComponent,
-    AddProductComponent
+    AddProductComponent,
+    LoginComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -47,7 +51,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     OrderModule
   ],
-  providers: [Configuration, DataService, 
+  providers: [Configuration, LoginService, DataService, 
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CustomInterceptor,

@@ -1,7 +1,8 @@
-import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpHeaders } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
+import { LoginService} from './login-service.service'
 
 
 @Injectable()
@@ -40,12 +41,31 @@ export class DataService {
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
 
+    private _loginService: LoginService;
+    constructor(injector:Injector) {
+      setTimeout(() => this._loginService = injector.get(LoginService));
+    }
+
+
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        console.log(this._loginService.isLoggedIn());
+
         if (!req.headers.has('Content-Type')) {
-            req = req.clone({ headers: req.headers.set('Content-Type', 'application/json') });
+            if(this._loginService.isLoggedIn()) {
+                req = req.clone({ headers: req.headers.set('Content-Type', 'application/json').set('Authorization', 'Basic ' + 
+                    btoa(this._loginService.username + ":" + this._loginService.password)) });
+            } else {
+                req = req.clone({ headers: req.headers.set('Content-Type', 'application/json')});
+            }
         }
 
-        req = req.clone({ headers: req.headers.set('Accept', 'application/json') });
+        if(this._loginService.isLoggedIn()) {
+            req = req.clone({ headers: req.headers.set('Accept', 'application/json').set('Authorization', 'Basic ' + 
+                btoa(this._loginService.username + ":" + this._loginService.password)) });
+        } else {
+            req = req.clone({ headers: req.headers.set('Accept', 'application/json')});
+        }
+
         return next.handle(req);
     }
 }

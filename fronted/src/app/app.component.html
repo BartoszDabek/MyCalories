@@ -1,19 +1,21 @@
 <div class="cover-container">
     <div class="masthead clearfix">
         <div class="inner">
-            <h3 class="masthead-brand">Login options</h3>
+            <nav>
+                <h3><a class="masthead-brand" routerLink="/login">Login</a></h3>
+            </nav>
             <nav class="nav nav-masthead">
                 <h3><a class="nav-link" routerLink="/">Home</a></h3>
-                <h3><a class="nav-link" routerLink="/category">Categories</a></h3>
-                <h3><a class="nav-link" routerLink="/products">Products</a></h3>
+                <h3><a *ngIf="_loginService.isLoggedIn()" class="nav-link" routerLink="/category">Categories</a></h3>
+                <h3><a *ngIf="_loginService.isLoggedIn()" class="nav-link" routerLink="/products">Products</a></h3>
             </nav>
         </div>
     </div>
-    <div class="mastfoot">
+    <!-- <div class="mastfoot">
         <div class="inner">
             <p>MyCalories @2017.</p>
         </div>
-    </div>
+    </div> -->
 </div>
 
 <router-outlet></router-outlet>
