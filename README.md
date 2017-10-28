@@ -1,7 +1,5 @@
 # MyCalories
 
-##
-<br>
 
 
 ## Prerequisites
@@ -20,5 +18,8 @@ Run server in your IDE
 > By default server will be running on port 8080.
 
 ## Development
-- Go to `./frontend` folder and type `npm start` or `ng serve` to start front-end server for development.
+- Go to `./frontend` folder  
+1. `npm install`
+2. `npm start` or `ng serve` to start front-end server for development.
 > By default server will be running on port 4200.
+
