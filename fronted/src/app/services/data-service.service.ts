@@ -3,6 +3,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
 import { LoginService} from './login-service.service'
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Injectable()
@@ -41,27 +42,24 @@ export class DataService {
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
 
-    private _loginService: LoginService;
-    constructor(injector:Injector) {
-      setTimeout(() => this._loginService = injector.get(LoginService));
+    constructor(private _cookieService: CookieService) { 
+
     }
 
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        console.log(this._loginService.isLoggedIn());
-
         if (!req.headers.has('Content-Type')) {
-            if(this._loginService.isLoggedIn()) {
+            if(this._cookieService.get('authorized') === 'true') {
                 req = req.clone({ headers: req.headers.set('Content-Type', 'application/json').set('Authorization', 'Basic ' + 
-                    btoa(this._loginService.username + ":" + this._loginService.password)) });
+                    this._cookieService.get('session-token')) });
             } else {
                 req = req.clone({ headers: req.headers.set('Content-Type', 'application/json')});
             }
         }
 
-        if(this._loginService.isLoggedIn()) {
+        if(this._cookieService.get('authorized') === 'true') {
             req = req.clone({ headers: req.headers.set('Accept', 'application/json').set('Authorization', 'Basic ' + 
-                btoa(this._loginService.username + ":" + this._loginService.password)) });
+                this._cookieService.get('session-token')) });
         } else {
             req = req.clone({ headers: req.headers.set('Accept', 'application/json')});
         }

@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { CategoryComponent } from './components/category/category.component';
@@ -51,7 +52,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     OrderModule
   ],
-  providers: [Configuration, LoginService, DataService, 
+  providers: [Configuration, CookieService, LoginService, DataService, 
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CustomInterceptor,

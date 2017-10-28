@@ -9,8 +9,8 @@ import { Credentials } from '../../interfaces/credentials';
 })
 export class LoginComponent implements OnInit {
 
-  private userName;
-  private password;
+  userName: string;
+  password: string;
 
   constructor(private _loginService: LoginService) { }
 
