@@ -21,6 +21,10 @@ public class Product extends AbstractModel {
     @JsonIgnore
     private Set<ProductMeal> productMeals;
 
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private Set<Opinion> opinions;
+
     @Embedded
     private NutritionalValues nutritionalValues;
 
@@ -54,6 +58,14 @@ public class Product extends AbstractModel {
 
     public void setNutritionalValues(NutritionalValues nutritionalValues) {
         this.nutritionalValues = nutritionalValues;
+    }
+
+    public Set<Opinion> getOpinions() {
+        return opinions;
+    }
+
+    public void setOpinions(Set<Opinion> opinions) {
+        this.opinions = opinions;
     }
 
     @Override

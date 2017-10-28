@@ -23,6 +23,10 @@ public class User extends AbstractModel implements UserDetails{
     @NotNull
     private String email;
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Opinion> opinions;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -100,6 +104,14 @@ public class User extends AbstractModel implements UserDetails{
 
     public void setDays(Set<Day> days) {
         this.days = days;
+    }
+
+    public Set<Opinion> getOpinions() {
+        return opinions;
+    }
+
+    public void setOpinions(Set<Opinion> opinions) {
+        this.opinions = opinions;
     }
 
     @Override
