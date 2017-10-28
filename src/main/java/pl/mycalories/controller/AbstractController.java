@@ -2,6 +2,7 @@ package pl.mycalories.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.mycalories.model.AbstractModel;
 import pl.mycalories.service.AbstractService;
@@ -32,6 +33,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
         return new ResponseEntity<T>(obj, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public @ResponseBody
     ResponseEntity<?> create(@RequestBody T obj) {
@@ -40,6 +42,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
         return new ResponseEntity<T>(createdObj, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PutMapping("/{id}")
     public @ResponseBody
     ResponseEntity<?> update(@PathVariable Long id, @RequestBody T obj) {
@@ -49,6 +52,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
         return new ResponseEntity<T>(obj, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/{id}")
     public @ResponseBody
     ResponseEntity<T> delete (@PathVariable Long id) {
