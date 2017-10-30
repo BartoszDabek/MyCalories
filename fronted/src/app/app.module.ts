@@ -22,6 +22,7 @@ import { OrderModule } from 'ngx-order-pipe';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
   { path: 'products/add-product', component: AddProductComponent },
   { path: 'products/:id', component: ProductDetailsComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegistrationComponent },
 ];
 
 @NgModule({
@@ -41,7 +43,8 @@ const appRoutes: Routes = [
     ProductComponent,
     ProductDetailsComponent,
     AddProductComponent,
-    LoginComponent
+    LoginComponent,
+    RegistrationComponent
   ],
   imports: [
     NgbModule.forRoot(),
