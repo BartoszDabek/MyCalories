@@ -23,6 +23,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { AlertService } from './services/alert.service';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -55,7 +56,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     OrderModule
   ],
-  providers: [Configuration, CookieService, LoginService, DataService, 
+  providers: [Configuration, CookieService, AlertService, LoginService, DataService, 
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CustomInterceptor,

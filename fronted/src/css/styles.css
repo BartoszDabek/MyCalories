@@ -52,6 +52,10 @@ body {
     justify-content: center;
 }
 
+.alert-msg {
+  color: red;
+}
+
 
 @media (min-width: 40em) {
   /* Pull out the header and footer */
