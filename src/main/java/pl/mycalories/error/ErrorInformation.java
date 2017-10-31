@@ -3,17 +3,20 @@ package pl.mycalories.error;
 import org.springframework.http.HttpStatus;
 
 public class ErrorInformation {
-    private AbstractError errorMsg;
 
-    public ErrorInformation(AbstractError errorMsg) {
+    private HttpStatus errorStatus;
+    private String errorMsg;
+
+    public ErrorInformation(HttpStatus errorStatus, String errorMsg) {
+        this.errorStatus = errorStatus;
         this.errorMsg = errorMsg;
     }
 
-    public HttpStatus getHttpStatus() {
-        return errorMsg.getHttpStatus();
+    public HttpStatus getErrorStatus() {
+        return errorStatus;
     }
 
     public String getErrorMsg() {
-        return errorMsg.getErrorMsg();
+        return errorMsg;
     }
 }

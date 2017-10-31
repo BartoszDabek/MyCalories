@@ -1,17 +1,65 @@
 package pl.mycalories.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import pl.mycalories.error.ErrorInformation;
+import pl.mycalories.model.Meal;
 import pl.mycalories.model.Product;
+import pl.mycalories.service.ErrorService;
 import pl.mycalories.service.ProductService;
 
 @RestController
 @RequestMapping("/product")
 public class ProductController extends AbstractController<Product, ProductService> {
 
+    private ErrorService errorService;
+    private ErrorInformation errorInformation;
+
     @Autowired
     public ProductController(ProductService service) {
         super(service);
+    }
+
+    @Autowired
+    public void setErrorService(ErrorService errorService) {
+        this.errorService = errorService;
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @Override
+    @PostMapping
+    public @ResponseBody
+    ResponseEntity<?> create(@RequestBody Product product) {
+        if(errorOccurs(product)) {
+            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getErrorStatus());
+        }
+
+        return super.create(product);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public @ResponseBody
+    ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product obj) {
+        return super.update(id, obj);
+    }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    ResponseEntity<Product> delete (@PathVariable Long id) {
+        return super.delete(id);
+    }
+
+    private boolean errorOccurs(Product product) {
+        errorInformation = errorService.productNameIsAlreadyTaken(product);
+        if(errorInformation != null) {
+            return true;
+        }
+        return false;
     }
 }

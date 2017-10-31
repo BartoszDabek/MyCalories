@@ -6,4 +6,5 @@ import pl.mycalories.model.Product;
 
 public interface ErrorService {
     ErrorInformation checkIfProductsAreModified(Meal meal);
+    ErrorInformation productNameIsAlreadyTaken(Product product);
 }

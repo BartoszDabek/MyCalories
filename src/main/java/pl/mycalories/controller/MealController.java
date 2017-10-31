@@ -32,7 +32,7 @@ public class MealController extends AbstractController<Meal, MealService> {
     public @ResponseBody
     ResponseEntity<?> create(@RequestBody Meal meal) {
         if(errorOccurs(meal)) {
-            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getHttpStatus());
+            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getErrorStatus());
         }
 
         return super.create(meal);
@@ -43,7 +43,7 @@ public class MealController extends AbstractController<Meal, MealService> {
     public @ResponseBody
     ResponseEntity<?> update(@PathVariable Long id, @RequestBody Meal meal) {
         if(errorOccurs(meal)) {
-            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getHttpStatus());
+            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getErrorStatus());
         }
 
         return super.update(id, meal);
@@ -51,7 +51,7 @@ public class MealController extends AbstractController<Meal, MealService> {
 
     private boolean errorOccurs(Meal meal) {
         errorInformation = errorService.checkIfProductsAreModified(meal);
-        if(errorInformation.getHttpStatus() != HttpStatus.OK) {
+        if(errorInformation != null) {
             return true;
         }
         return false;

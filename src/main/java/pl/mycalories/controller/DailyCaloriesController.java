@@ -34,7 +34,7 @@ public class DailyCaloriesController extends AbstractController<DailyCalories, D
     public @ResponseBody
     ResponseEntity<?> create(@RequestBody DailyCalories dailyCalories) {
         if(errorOccurs(dailyCalories)) {
-            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getHttpStatus());
+            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getErrorStatus());
         }
 
         return super.create(dailyCalories);
@@ -44,7 +44,7 @@ public class DailyCaloriesController extends AbstractController<DailyCalories, D
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody DailyCalories dailyCalories) {
         if(errorOccurs(dailyCalories)) {
-            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getHttpStatus());
+            return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getErrorStatus());
         }
 
         return super.update(id, dailyCalories);
@@ -53,7 +53,7 @@ public class DailyCaloriesController extends AbstractController<DailyCalories, D
     private boolean errorOccurs(DailyCalories dailyCalories) {
         for(Meal meal: dailyCalories.getMeals()) {
             errorInformation = errorService.checkIfProductsAreModified(meal);
-            if(errorInformation.getHttpStatus() != HttpStatus.OK) {
+            if(errorInformation != null) {
                 return true;
             }
         }
