@@ -7,16 +7,16 @@ import javax.validation.constraints.NotNull;
 public class NutritionalValues {
 
     @NotNull
-    private Integer calories;
+    private Integer calories = 0;
 
     @NotNull
-    private Integer proteins;
+    private Integer proteins = 0;
 
     @NotNull
-    private Integer fats;
+    private Integer fats = 0;
 
     @NotNull
-    private Integer carbs;
+    private Integer carbs = 0;
 
     public NutritionalValues() {
     }
@@ -59,35 +59,35 @@ public class NutritionalValues {
         this.proteins += (productMeal.getProduct().getNutritionalValues().getProteins() * productMeal.getAmount());
     }
 
-    public int getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 
-    public int getProteins() {
+    public Integer getProteins() {
         return proteins;
     }
 
-    public void setProteins(int proteins) {
+    public void setProteins(Integer proteins) {
         this.proteins = proteins;
     }
 
-    public int getFats() {
+    public Integer getFats() {
         return fats;
     }
 
-    public void setFats(int fats) {
+    public void setFats(Integer fats) {
         this.fats = fats;
     }
 
-    public int getCarbs() {
+    public Integer getCarbs() {
         return carbs;
     }
 
-    public void setCarbs(int carbs) {
+    public void setCarbs(Integer carbs) {
         this.carbs = carbs;
     }
 
@@ -98,19 +98,18 @@ public class NutritionalValues {
 
         NutritionalValues that = (NutritionalValues) o;
 
-        if (calories != that.calories) return false;
-        if (proteins != that.proteins) return false;
-        if (fats != that.fats) return false;
-        return carbs == that.carbs;
+        if (calories != null ? !calories.equals(that.calories) : that.calories != null) return false;
+        if (proteins != null ? !proteins.equals(that.proteins) : that.proteins != null) return false;
+        if (fats != null ? !fats.equals(that.fats) : that.fats != null) return false;
+        return carbs != null ? carbs.equals(that.carbs) : that.carbs == null;
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + calories;
-        result = 31 * result + proteins;
-        result = 31 * result + fats;
-        result = 31 * result + carbs;
+        int result = calories != null ? calories.hashCode() : 0;
+        result = 31 * result + (proteins != null ? proteins.hashCode() : 0);
+        result = 31 * result + (fats != null ? fats.hashCode() : 0);
+        result = 31 * result + (carbs != null ? carbs.hashCode() : 0);
         return result;
     }
 }

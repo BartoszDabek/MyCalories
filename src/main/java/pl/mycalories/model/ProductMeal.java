@@ -53,7 +53,7 @@ public class ProductMeal extends AbstractModel {
 
         ProductMeal that = (ProductMeal) o;
 
-        if (amount != that.amount) return false;
+        if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
         if (product != null ? !product.equals(that.product) : that.product != null) return false;
         return meal != null ? meal.equals(that.meal) : that.meal == null;
     }
@@ -61,7 +61,7 @@ public class ProductMeal extends AbstractModel {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + amount;
+        result = 31 * result + (amount != null ? amount.hashCode() : 0);
         result = 31 * result + (product != null ? product.hashCode() : 0);
         result = 31 * result + (meal != null ? meal.hashCode() : 0);
         return result;

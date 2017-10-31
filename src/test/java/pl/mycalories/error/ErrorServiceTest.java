@@ -58,11 +58,10 @@ public class ErrorServiceTest {
     }
 
     @Test
-    public void should_return_status_OK_200_because_product_is_not_modified() {
-        HttpStatus expectedStatus = HttpStatus.OK;
+    public void should_return_null_because_product_is_not_modified() {
         Mockito.when(productService.findById(any(Long.class))).thenReturn(originalProduct);
         ErrorInformation errorInformation = errorService.checkIfProductsAreModified(meal);
-        Assert.assertEquals(expectedStatus, errorInformation.getHttpStatus());
+        Assert.assertEquals(null, errorInformation);
     }
 
     @Test
@@ -73,7 +72,7 @@ public class ErrorServiceTest {
         Mockito.when(productService.findById(any(Long.class))).thenReturn(testedProduct);
         ErrorInformation errorInformation = errorService.checkIfProductsAreModified(meal);
         verify(productService, times(1)).findById(any(Long.class));
-        Assert.assertEquals(expectedStatus, errorInformation.getHttpStatus());
+        Assert.assertEquals(expectedStatus, errorInformation.getErrorStatus());
     }
 
     @Test
@@ -84,7 +83,7 @@ public class ErrorServiceTest {
         Mockito.when(productService.findById(any(Long.class))).thenReturn(testedProduct);
         ErrorInformation errorInformation = errorService.checkIfProductsAreModified(meal);
         verify(productService, times(1)).findById(any(Long.class));
-        Assert.assertEquals(expectedStatus, errorInformation.getHttpStatus());
+        Assert.assertEquals(expectedStatus, errorInformation.getErrorStatus());
     }
 
     @Test
@@ -95,7 +94,7 @@ public class ErrorServiceTest {
         Mockito.when(productService.findById(any(Long.class))).thenReturn(testedProduct);
         ErrorInformation errorInformation = errorService.checkIfProductsAreModified(meal);
         verify(productService, times(1)).findById(any(Long.class));
-        Assert.assertEquals(expectedStatus, errorInformation.getHttpStatus());
+        Assert.assertEquals(expectedStatus, errorInformation.getErrorStatus());
     }
 
 }

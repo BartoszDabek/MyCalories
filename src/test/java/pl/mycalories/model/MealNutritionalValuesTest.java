@@ -36,25 +36,25 @@ public class MealNutritionalValuesTest {
 
     @Test
     public void calories_are_match() {
-        int expectedCalories = 1250;
+        Integer expectedCalories = 1250;
         Assert.assertEquals(expectedCalories, meal.getNutritionalValues().getCalories());
     }
 
     @Test
     public void carbs_are_match() {
-        int expectedCarbs = 250;
+        Integer expectedCarbs = 250;
         Assert.assertEquals(expectedCarbs, meal.getNutritionalValues().getCarbs());
     }
 
     @Test
     public void proteins_are_match() {
-        int expectedProteins = 500;
+        Integer expectedProteins = 500;
         Assert.assertEquals(expectedProteins, meal.getNutritionalValues().getProteins());
     }
 
     @Test
     public void fats_are_match() {
-        int expectedFats = 750;
+        Integer expectedFats = 750;
         Assert.assertEquals(expectedFats, meal.getNutritionalValues().getFats());
     }
 

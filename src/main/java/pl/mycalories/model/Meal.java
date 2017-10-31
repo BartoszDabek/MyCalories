@@ -20,7 +20,7 @@ public class Meal extends AbstractModel {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "meal", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private Set<ProductMeal> productMeals;
+    private Set<ProductMeal> productMeals = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = DailyCalories.class)
     @JoinColumn(name = "daily_calories_id")
