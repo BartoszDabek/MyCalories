@@ -1,51 +1,97 @@
 <section class="container">
-  <div class="container-page center">				
+  <div class="container-page center">
     <div class="col-md-8">
       <h3 class="dark-grey">Add new product</h3>
-      <form (submit)="createProduct()">
+      <form (submit)="formProduct.form.valid &&createProduct()" [formGroup]="productForm" #formProduct="ngForm">
+       
+        <div class="form-group col-lg-12">
+          <label>Product name</label>
+          <input type="text" name="name" class="form-control" id="name" placeholder="Product name" formControlName="name" required>
+          <div *ngIf="name.invalid && formProduct.submitted" class="alert-msg">
+            <div *ngIf="name.errors.required">
+              Name is required.
+            </div>
+          </div>
+        </div>
 
-      <div class="form-group col-lg-12">
-        <label>Product name</label>
-        <input type="text" name="name" class="form-control" id="name" placeholder="Product name" 
-          [(ngModel)]="nameInput" required>
-      </div>
-      
-      <div class="form-group col-lg-6 float-left">
-        <label>Calories /100g</label>
-        <input type="number" name="calories" class="form-control" id="calories" placeholder="calories"
-          [(ngModel)]="caloriesInput" required>
-      </div>
-      
-      <div class="form-group col-lg-6 hide-overflow">
-        <label>Proteins /100g</label>
-        <input type="number" name="proteins" class="form-control" id="proteins" placeholder="proteins"
-        [(ngModel)]="proteinsInput" required>
-      </div>
-              
-      <div class="form-group col-lg-6 float-left">
-        <label>Fats /100g</label>
-        <input type="number" name="fats" class="form-control" id="fats" placeholder="fats"
-        [(ngModel)]="fatsInput" required>
-      </div>
-      
-      <div class="form-group col-lg-6 hide-overflow">
-        <label>Carbs /100g</label>
-        <input type="number" name="carbs" class="form-control" id="carbs" placeholder="carbs"
-        [(ngModel)]="carbsInput" required>
-      </div>
+        <div class="divider"></div>
 
-      <div class="form-group col-lg-12">
+        <div class="form-group col-lg-6 float-left">
+          <label>Calories /100g</label>
+          <input type="number" name="calories" class="form-control" id="calories" placeholder="calories" formControlName="calories"
+            required>
+          <div *ngIf="calories.invalid && formProduct.submitted" class="alert-msg">
+            <div *ngIf="calories.errors.required">
+              Calories value is required.
+            </div>
+            <div *ngIf="calories.errors.min">
+              Calories value cannot be lower than 0
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group col-lg-6 hide-overflow">
+          <label>Proteins /100g</label>
+          <input type="number" name="proteins" class="form-control" id="proteins" placeholder="proteins" formControlName="proteins"
+            required>
+          <div *ngIf="proteins.invalid && formProduct.submitted" class="alert-msg">
+            <div *ngIf="proteins.errors.required">
+              Proteins value is required.
+            </div>
+            <div *ngIf="proteins.errors.min">
+              Proteins value cannot be lower than 0
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-group col-lg-6 float-left">
+          <label>Fats /100g</label>
+          <input type="number" name="fats" class="form-control" id="fats" placeholder="fats" formControlName="fats" required>
+          <div *ngIf="fats.invalid && formProduct.submitted" class="alert-msg">
+            <div *ngIf="fats.errors.required">
+              Fats value is required.
+            </div>
+            <div *ngIf="fats.errors.min">
+              Fats value cannot be lower than 0
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-lg-6 hide-overflow">
+          <label>Carbs /100g</label>
+          <input type="number" name="carbs" class="form-control" id="carbs" placeholder="carbs" formControlName="carbs" required>
+          <div *ngIf="carbs.invalid && formProduct.submitted" class="alert-msg">
+            <div *ngIf="carbs.errors.required">
+              Carbs value is required.
+            </div>
+            <div *ngIf="carbs.errors.min">
+              Carbs value cannot be lower than 0
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="form-group col-lg-12">
           <label>Category</label>
-          <select class="form-control" id="category"  [(ngModel)]="categoryInput" name="category" required>
+          <select class="form-control" id="category" name="category" formControlName="category" required>
             <option *ngFor="let category of categories" [ngValue]="category">{{category.name}}</option>
           </select>
-      </div>
+          <div *ngIf="category.invalid && formProduct.submitted" class="alert-msg">
+            <div *ngIf="category.errors.required">
+              Select category for this product!
+            </div>
+          </div>
+        </div>
 
-      <div class="button-create">
-        <button type="submit" class="btn btn-lg btn-primary">Add product</button>	
-      </div>
+        <div class="button-create">
+          <button type="submit" class="btn btn-lg btn-primary">Add product</button>
+        </div>
 
-    </form>
+      </form>
 
     </div>
   </div>
