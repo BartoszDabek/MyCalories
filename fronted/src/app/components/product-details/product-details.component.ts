@@ -10,22 +10,21 @@ import { LoginService } from '../../services/login-service.service';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent implements OnInit {
-  apiEndPoint: string = 'product/';
+  private endPoint: string = 'product/';
   product: ProductInterface;
   sub:any;
   opinionBody: string;
 
   constructor(
-    private _dataService: DataService, 
+    private dataService: DataService, 
     private route: ActivatedRoute,
     private loginService: LoginService
   ) { }
 
   ngOnInit() {
-    console.log(this.loginService.currentUser);
     this.sub = this.route.params.subscribe(params => {
       let id = params['id'];
-      this._dataService.getSingle<ProductInterface>(this.apiEndPoint, id)
+      this.dataService.getSingle<ProductInterface>(this.endPoint, id)
         .subscribe(
           res => {
             this.product = res;
@@ -37,10 +36,11 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addOpinion(){
-    this._dataService.add("opinion/", {
+    console.log(JSON.parse(localStorage.getItem("currentUser")));
+    this.dataService.add("opinion/", {
       description: this.opinionBody,
       product: this.product,
-      user: this.loginService.currentUser
+      user: JSON.parse(localStorage.getItem("currentUser"))
     })
       .subscribe(
       res => {

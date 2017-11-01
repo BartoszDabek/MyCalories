@@ -2,8 +2,7 @@ import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpH
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
-import { LoginService} from './login-service.service'
-import { CookieService } from 'ngx-cookie-service';
+import { LoginService } from './login-service.service'
 
 
 @Injectable()
@@ -42,28 +41,28 @@ export class DataService {
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
 
-    constructor(private _cookieService: CookieService) { 
-
-    }
-
-
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        let credentials = (localStorage.getItem("credentials"));
+
         if (!req.headers.has('Content-Type')) {
-            if(this._cookieService.get('authorized') === 'true') {
-                req = req.clone({ headers: req.headers.set('Content-Type', 'application/json').set('Authorization', 'Basic ' + 
-                    this._cookieService.get('session-token')) });
-            } else {
-                req = req.clone({ headers: req.headers.set('Content-Type', 'application/json')});
-            }
+            req = this.handleRequest('Content-Type', req);
         }
 
-        if(this._cookieService.get('authorized') === 'true') {
-            req = req.clone({ headers: req.headers.set('Accept', 'application/json').set('Authorization', 'Basic ' + 
-                this._cookieService.get('session-token')) });
-        } else {
-            req = req.clone({ headers: req.headers.set('Accept', 'application/json')});
-        }
+        req = this.handleRequest('Accept', req);
 
         return next.handle(req);
     }
+
+    private handleRequest(key: string, req: HttpRequest<any>) {
+        let credentials = (localStorage.getItem("credentials"));
+
+        if (credentials !== null) {
+            return req.clone({
+                headers: req.headers.set(key, 'application/json').set('Authorization', 'Basic ' + credentials)
+            });
+        } else {
+            return req.clone({ headers: req.headers.set(key, 'application/json') });
+        }
+    }
+
 }
