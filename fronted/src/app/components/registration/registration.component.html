@@ -4,7 +4,8 @@
       <div class="col-md-6 float-left">
         <h3 class="dark-grey">Registration</h3>
 
-        <form (submit)="formRegister.form.valid && register()" [formGroup]="registerForm" #formRegister="ngForm">
+        <form (submit)="formRegister.form.valid && password.value == confirm_password.value && register()" [formGroup]="registerForm"
+          #formRegister="ngForm">
 
           <div class="form-group col-lg-12">
             <label>Username</label>
@@ -31,8 +32,7 @@
             </div>
           </div>
 
-          <div *ngIf="password.invalid && formRegister.submitted"
-            class="alert-msg col-lg-12">
+          <div *ngIf="password.invalid && formRegister.submitted" class="alert-msg col-lg-12">
             <div *ngIf="password.errors.required">
               Password is required.
             </div>
@@ -41,8 +41,7 @@
             </div>
           </div>
 
-          <div *ngIf="registerForm.get(['passwords','password']).value != registerForm.get(['passwords','confirm_password']).value 
-                    && registerForm.get(['passwords','confirm_password']).value != null" class="alert-msg col-lg-12">
+          <div *ngIf="password.value != confirm_password.value && confirm_password.value != null" class="alert-msg col-lg-12">
             Password does not match
           </div>
 
@@ -60,16 +59,16 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
-            <input type="checkbox" class="checkbox" />Sigh up for our newsletter
+          <div class="col-sm-12">
+            <input type="checkbox" class="checkbox" /> Sign up for our newsletter
           </div>
 
-          <div class="col-sm-6">
-            <input type="checkbox" class="checkbox" />Send notifications to this email
+          <div class="col-sm-12">
+            <input type="checkbox" class="checkbox" /> Send notifications to this email
           </div>
 
           <div class="col-lg-6 button-create">
-            <button type="submit" class="btn btn-primary" >Register</button>
+            <button type="submit" class="btn btn-primary">Register</button>
           </div>
 
         </form>

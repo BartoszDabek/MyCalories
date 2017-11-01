@@ -23,14 +23,14 @@ export class RegistrationComponent implements OnInit {
         Validators.minLength(4)
       ]),
       'passwords': new FormGroup({
-       'password': new FormControl(this.model.password, [
-        Validators.required,
-        Validators.minLength(6)
-       ]),
-       'confirm_password': new FormControl(this.model.confirm_password, [
-        Validators.required,
-        Validators.minLength(6)
-       ]),
+        'password': new FormControl(this.model.password, [
+          Validators.required,
+          Validators.minLength(6)
+        ]),
+        'confirm_password': new FormControl(this.model.confirm_password, [
+          Validators.required,
+          Validators.minLength(6)
+        ]),
       }, passwordConfirming),
       'email': new FormControl(this.model.email, [
         Validators.required,
@@ -48,12 +48,12 @@ export class RegistrationComponent implements OnInit {
 
     this.dataService.add(this.apiEndPoint, this.model)
       .subscribe(
-        data => {
-          this.router.navigateByUrl('/login');
-        },
-        err => {
-          console.log("error in registration component register");
-        }
+      data => {
+        this.router.navigateByUrl('/login');
+      },
+      err => {
+        console.log("error in registration component register");
+      }
       )
   }
 
@@ -61,26 +61,20 @@ export class RegistrationComponent implements OnInit {
     return first === second;
   }
 
-  get username() { 
-    return this.registerForm.get('username'); 
-  }
+  get username() { return this.registerForm.get('username'); }
 
-  get passwords() { 
-    return this.registerForm.get('passwords'); 
-  }
+  get passwords() { return this.registerForm.get('passwords'); }
 
-  get password() {
-    return this.registerForm.get('passwords').get('password');
-  }
+  get password() { return this.registerForm.get('passwords').get('password'); }
 
-  get email() {
-    return this.registerForm.get('email'); 
-  }
+  get confirm_password() { return this.registerForm.get('passwords').get('confirm_password'); }
+
+  get email() { return this.registerForm.get('email'); }
 
 }
 
 export function passwordConfirming(c: AbstractControl): ValidatorFn {
-    if (c.get('password').value === c.get('confirm_password').value) {
-      return null;
-  } 
+  if (c.get('password').value === c.get('confirm_password').value) {
+    return null;
+  }
 }
