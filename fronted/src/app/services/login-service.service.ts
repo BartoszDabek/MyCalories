@@ -13,6 +13,7 @@ export class LoginService {
   password: string;
   actionUrl: string;
   authenticated: boolean;
+  currentUser: any;
   
   constructor(private http: HttpClient, private _router: Router, private cookieService: CookieService) {
       this.actionUrl = Configuration.HOME_URL;
@@ -26,6 +27,7 @@ export class LoginService {
       .subscribe(
         res => {
           console.log("login-service success");
+          this.currentUser = res;
           this.cookieService.set( 'username', credentials.username );
           this.cookieService.set( 'authorized', 'true' );
           this.cookieService.set( 'session-token', btoa(credentials.username + ":" + credentials.password ));
@@ -36,7 +38,7 @@ export class LoginService {
         },
         err => {
           console.log("login-service error");
-        }
+        }        
       );
 }
 

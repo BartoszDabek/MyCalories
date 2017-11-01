@@ -1,10 +1,13 @@
 package pl.mycalories.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import pl.mycalories.model.Category;
 import pl.mycalories.model.Opinion;
 import pl.mycalories.service.OpinionService;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/opinion")
@@ -16,5 +19,14 @@ public class OpinionController extends AbstractController <Opinion, OpinionServi
     }
 
 
+    @Override
+    @PostMapping
+    public @ResponseBody
+    ResponseEntity<?> create(@RequestBody Opinion obj) {
+        if (obj.getAddDate() == null){
+            obj.setAddDate(new Date());
+        }
+        return super.create(obj);
+    }
 
 }

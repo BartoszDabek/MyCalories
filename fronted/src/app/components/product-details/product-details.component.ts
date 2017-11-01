@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataService } from '../../services/data-service.service'
+import { DataService } from '../../services/data-service.service';
 import { ProductInterface } from '../../interfaces/product';
+import { LoginService } from '../../services/login-service.service';
 
 @Component({
   selector: 'app-product-details',
@@ -9,16 +10,21 @@ import { ProductInterface } from '../../interfaces/product';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent implements OnInit {
-  private apiEndPoint: string = 'product/';
-  private product: ProductInterface;
-  private sub:any;
+  apiEndPoint: string = 'product/';
+  product: ProductInterface;
+  sub:any;
+  opinionBody: string;
 
-  constructor(private _dataService: DataService, private route: ActivatedRoute) { }
+  constructor(
+    private _dataService: DataService, 
+    private route: ActivatedRoute,
+    private loginService: LoginService
+  ) { }
 
   ngOnInit() {
+    console.log(this.loginService.currentUser);
     this.sub = this.route.params.subscribe(params => {
       let id = params['id'];
-
       this._dataService.getSingle<ProductInterface>(this.apiEndPoint, id)
         .subscribe(
           res => {
@@ -30,8 +36,26 @@ export class ProductDetailsComponent implements OnInit {
     })
   }
 
+  addOpinion(){
+    this._dataService.add("opinion/", {
+      description: this.opinionBody,
+      product: this.product,
+      user: this.loginService.currentUser
+    })
+      .subscribe(
+      res => {
+        console.log("Dodałem produkt");
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+        console.log("Error occurd in add_category category.component");
+      });
+  }
+
+
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-
+  
 }
