@@ -1,4 +1,4 @@
-<div class="btn-wrapper center">
+<div *ngIf="loginService.isLoggedIn()" class="btn-wrapper center">
     <a class="btn btn-lg btn-success" routerLink="/products/add-product">Add new product</a>
 </div>
 

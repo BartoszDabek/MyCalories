@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../app.constants';
 import { Credentials } from '../interfaces/credentials'
 import { Router } from '@angular/router';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class LoginService {
@@ -43,11 +44,19 @@ export class LoginService {
     this.authenticated = true;
   };
 
-  public isLoggedIn() {
+  public isLoggedIn(): boolean {
     if (localStorage.getItem("credentials") !== null) {
       this.authenticated = true;
     }
     return this.authenticated;
   };
+
+  public hasRole(roleName: string): boolean {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser == null || currentUser.roles.find(x => x.roleName === roleName) == null) {
+      return false;
+    }
+    return true;
+  }
 
 }

@@ -1,4 +1,4 @@
-<div class="form-wrapper center">
+<div class="form-wrapper center" *ngIf="loginService.hasRole('ROLE_ADMIN')">
     <form class="form-inline" (submit)="addCategory()">
         <label class="sr-only" for="inlineFormInput">Name</label>
         <input type="text" [(ngModel)]="categoryNameInput" name="category" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput" placeholder="Category name">
@@ -21,7 +21,7 @@
                 <th scope="row">{{ i + 1 }}</th>
                 <td>{{ category.name }}</td>
                 <td class="mv-right">
-                    <button class="btn btn-danger" (click)="deleteCategory(category)">Delete</button>
+                    <button *ngIf="loginService.hasRole('ROLE_ADMIN')" class="btn btn-danger" (click)="deleteCategory(category)">Delete</button>
                 </td>
             </tr>
         </tbody>

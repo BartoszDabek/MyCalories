@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms'
 import { DataService } from '../../../services/data-service.service';
 import { CategoryInterface } from '../../../interfaces/category';
@@ -16,7 +17,7 @@ export class AddProductComponent implements OnInit {
   model: any = {};
   productForm: FormGroup
 
-  constructor(private _dataService: DataService) { }
+  constructor(private _dataService: DataService, private router: Router) { }
 
   ngOnInit() {
     this._dataService.getAll<CategoryInterface[]>("category/")
@@ -65,9 +66,10 @@ export class AddProductComponent implements OnInit {
     })
       .subscribe(
       res => {
-        console.log("Dodałem produkt");
+        this.router.navigateByUrl('/products');
       },
       err => {
+        let error = JSON.parse(err.error);
         console.log("Error occurd in add_category category.component");
       });
   }

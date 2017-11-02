@@ -38,7 +38,7 @@
         </ngb-rating>
       </div>
       <div class="button-create">
-        <button type="submit" class="btn btn-lg btn-primary">Add opinion</button>
+        <button type="submit" class="btn btn-lg btn-primary" [disabled]="!loginService.isLoggedIn()">Add opinion</button>
       </div>
     </form>
   </div>
@@ -59,13 +59,13 @@
         </ngb-rating>
       </div>
       <div class="opinion-date">
-        Data dodania: {{ opinion.addDate }}
+        Date added: {{ opinion.addDate }}
       </div>
       <div class="opinion-creator">
-        Wysyłający: {{ opinion.user.username }}
+        Added by: {{ opinion.user.username }}
       </div>
       <div class="opinion-description">
-        Opis: {{ opinion.description }}
+        Description: {{ opinion.description }}
       </div>
     </div>
   </div>

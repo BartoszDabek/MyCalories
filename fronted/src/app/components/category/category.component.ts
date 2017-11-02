@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryInterface } from '../../interfaces/category';
-import { DataService } from '../../services/data-service.service'
+import { DataService } from '../../services/data-service.service';
+import { LoginService } from '../../services/login-service.service'
 
 @Component({
   selector: 'app-category',
@@ -12,10 +13,10 @@ export class CategoryComponent implements OnInit {
   private categoryNameInput: string;
   private categories: CategoryInterface[];
 
-  constructor(private _dataService: DataService) { }
+  constructor(private dataService: DataService, private loginService: LoginService) { }
 
   ngOnInit() {
-    this._dataService.getAll<CategoryInterface[]>(this.apiEndPoint)
+    this.dataService.getAll<CategoryInterface[]>(this.apiEndPoint)
       .subscribe(
         res => {
           this.categories = res;
@@ -27,7 +28,7 @@ export class CategoryComponent implements OnInit {
 
   private addCategory() {
     if (this.categoryIsFilled()) {
-        this._dataService.add<CategoryInterface>(this.apiEndPoint, { 
+        this.dataService.add<CategoryInterface>(this.apiEndPoint, { 
           name: this.categoryNameInput 
         })
         .subscribe(
@@ -45,7 +46,7 @@ export class CategoryComponent implements OnInit {
   deleteCategory(category: CategoryInterface) {
     for (let i = 0; i < this.categories.length; i++) {
       if (this.categories[i] === category) {
-        this._dataService.delete<CategoryInterface>(this.apiEndPoint, category.id)
+        this.dataService.delete<CategoryInterface>(this.apiEndPoint, category.id)
           .subscribe(
             res => {
               this.categories.splice(i, 1);
