@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoryInterface } from '../../interfaces/category';
-import { DataService } from '../../services/data-service.service';
-import { LoginService } from '../../services/login-service.service'
+import { CategoryInterface } from '../../shared/interfaces/category';
+import { DataService } from '../../shared/services/data-service.service';
+import { LoginService } from '../../shared/services/login-service.service'
 
 @Component({
   selector: 'app-category',

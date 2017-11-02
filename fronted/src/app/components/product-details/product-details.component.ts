@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from '../../services/data-service.service';
-import { ProductInterface } from '../../interfaces/product';
-import { LoginService } from '../../services/login-service.service';
+import { DataService } from '../../shared/services/data-service.service';
+import { ProductInterface } from '../../shared/interfaces/product';
+import { LoginService } from '../../shared/services/login-service.service';
 import { Configuration } from '../../app.constants';
 import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 

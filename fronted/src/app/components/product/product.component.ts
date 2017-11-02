@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductInterface } from '../../interfaces/product';
-import { DataService } from '../../services/data-service.service'
+import { ProductInterface } from '../../shared/interfaces/product';
+import { DataService } from '../../shared/services/data-service.service'
 import { Observable } from 'rxjs/Observable';
-import { LoginService } from '../../services/login-service.service'
+import { LoginService } from '../../shared/services/login-service.service'
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 

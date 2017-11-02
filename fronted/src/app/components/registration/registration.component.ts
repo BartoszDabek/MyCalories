@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup, Validators, ValidatorFn } from '@angular/forms'
-import { DataService } from '../../services/data-service.service';
+import { DataService } from '../../shared/services/data-service.service';
 
 @Component({
   selector: 'app-registration',

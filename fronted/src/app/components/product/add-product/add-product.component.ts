@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { DataService } from '../../../services/data-service.service';
-import { CategoryInterface } from '../../../interfaces/category';
-import { ProductInterface } from '../../../interfaces/product';
+import { DataService } from '../../../shared/services/data-service.service';
+import { CategoryInterface } from '../../../shared/interfaces/category';
+import { ProductInterface } from '../../../shared/interfaces/product';
 
 
 @Component({

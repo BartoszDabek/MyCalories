@@ -1,0 +1,15 @@
+<div class="cover-container">
+    <div class="masthead clearfix">
+        <div class="inner">
+            <nav>
+                <h3><a *ngIf="!loginService.isLoggedIn()" class="masthead-brand" routerLink="/login">Login</a></h3>
+                <h3><a *ngIf="loginService.isLoggedIn()" (click)="loginService.setLoggedOut()" class="masthead-brand" routerLink="/login">Logout</a></h3>
+            </nav>
+            <nav class="nav nav-masthead">
+                <h3><a class="nav-link" routerLink="/home">Home</a></h3>
+                <h3><a class="nav-link" routerLink="/category">Categories</a></h3>
+                <h3><a class="nav-link" routerLink="/products">Products</a></h3>
+            </nav>
+        </div>
+    </div>
+</div>

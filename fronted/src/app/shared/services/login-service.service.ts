@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { Configuration } from '../app.constants';
+import { Configuration } from '../../app.constants';
 import { Credentials } from '../interfaces/credentials'
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -26,7 +26,7 @@ export class LoginService {
         localStorage.setItem("credentials", btoa(credentials.username + ":" + credentials.password));
         localStorage.setItem('currentUser', JSON.stringify(res));
         this.authenticated = true;
-        this.router.navigateByUrl('');
+        this.router.navigateByUrl('home');
       },
       err => {
         console.log("login-service error");
