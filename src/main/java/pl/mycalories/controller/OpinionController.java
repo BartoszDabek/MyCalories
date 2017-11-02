@@ -2,6 +2,7 @@ package pl.mycalories.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.mycalories.model.Category;
 import pl.mycalories.model.Opinion;
@@ -18,7 +19,7 @@ public class OpinionController extends AbstractController <Opinion, OpinionServi
         super(service);
     }
 
-
+    @PreAuthorize("hasRole('USER')")
     @Override
     @PostMapping
     public @ResponseBody
