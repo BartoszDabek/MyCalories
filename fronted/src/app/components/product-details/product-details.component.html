@@ -22,40 +22,52 @@
     </tbody>
   </table>
 </div>
+<div class="data-wrapper">
 
+  <div class="opinion-create">
+    <form (submit)="addOpinion()">
+      <div class="form-group">
+        <textarea [(ngModel)]="opinionBody" class="form-control" id="opinion" name="opinion" rows="3" maxlength="60" placeholder="Short description(max 60 characters)">
+        </textarea>
+      </div>
+      <div class="star-rating">
+        <ngb-rating [(rate)]="currentRate" max="5">
+          <ng-template let-fill="fill">
+            <span class="star" [class.filled]="fill === 100">&#9733;</span>
+          </ng-template>
+        </ngb-rating>
+      </div>
+      <div class="button-create">
+        <button type="submit" class="btn btn-lg btn-primary">Add opinion</button>
+      </div>
+    </form>
+  </div>
 
-<form (submit)="addOpinion()">
+  <div class="opinions-header">
+    <h2>Opinions</h2>
+  </div>
 
-  <div class="data-wrapper">
-    <table class="table">
-        <thead>
-          <tr>
-            Opinions
-          </tr>
-            <tr>
-                <th>Rating</th>
-                <th>Add date</th>
-                <th>User</th>
-                <th>Description</th>
-            </tr>
+  <div class="opinions-content" *ngFor="let opinion of opinions">
+    <hr>
+    <div class="opinions-decoration">
+      <div class="opinion-rating">
+        Rating:
+        <ngb-rating [(rate)]="opinion.rating" [readonly]="true" max="5">
+          <ng-template let-fill="fill">
+            <span class="star" [class.filled]="fill === 100">&#9733;</span>
+          </ng-template>
+        </ngb-rating>
+      </div>
+      <div class="opinion-date">
+        Data dodania: {{ opinion.addDate }}
+      </div>
+      <div class="opinion-creator">
+        Wysyłający: {{ opinion.user.username }}
+      </div>
+      <div class="opinion-description">
+        Opis: {{ opinion.description }}
+      </div>
+    </div>
+  </div>
 
-        </thead>
-      
-    </table>
 </div>
-
-  <div class="form-group">
-    <label for="opinionTextarea">Add opinion</label>
-    <textarea [(ngModel)]="opinionBody" class="form-control" id="opinionTextarea" name="opinionTextarea" rows="3"></textarea>
-  </div>
-  <div>
-    <ngb-rating [rate]="3"></ngb-rating>
-  </div>
-
-  <div class="button-create">
-    <button type="submit" class="btn btn-lg btn-primary">Add opinion</button>
-  </div>
-
-
-
- </form>

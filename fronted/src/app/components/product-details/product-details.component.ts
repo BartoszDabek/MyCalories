@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { DataService } from '../../services/data-service.service';
 import { ProductInterface } from '../../interfaces/product';
 import { LoginService } from '../../services/login-service.service';
+import { Configuration } from '../../app.constants';
+import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product-details',
@@ -12,13 +15,16 @@ import { LoginService } from '../../services/login-service.service';
 export class ProductDetailsComponent implements OnInit {
   private endPoint: string = 'product/';
   product: ProductInterface;
-  sub:any;
+  opinions: any;
+  sub: any;
   opinionBody: string;
+  currentRate: number;
 
   constructor(
-    private dataService: DataService, 
+    private dataService: DataService,
+    private loginService: LoginService,
     private route: ActivatedRoute,
-    private loginService: LoginService
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -26,30 +32,39 @@ export class ProductDetailsComponent implements OnInit {
       let id = params['id'];
       this.dataService.getSingle<ProductInterface>(this.endPoint, id)
         .subscribe(
-          res => {
-            this.product = res;
-          },
-          err => {
-              console.log("error in get_single product-details component");
-          });
+        res => {
+          this.product = res;
+        },
+        err => {
+          console.log("error in get_single product-details component");
+        });
+
+      this.http.get(Configuration.HOME_URL + this.endPoint + id + '/opinions')
+        .subscribe(
+        res => {
+          this.opinions = res;
+        },
+        err => {
+          console.log("error in getting opinions product-details component");
+        });
+
+
     })
   }
 
-  addOpinion(){
-    console.log(JSON.parse(localStorage.getItem("currentUser")));
+  addOpinion() {
     this.dataService.add("opinion/", {
       description: this.opinionBody,
+      rating: this.currentRate,
       product: this.product,
       user: JSON.parse(localStorage.getItem("currentUser"))
     })
       .subscribe(
       res => {
-        console.log("Dodałem produkt");
-        console.log(res);
+        this.opinions.push(res);
       },
       err => {
-        console.log(err);
-        console.log("Error occurd in add_category category.component");
+        console.log("Error occurd in addOpinion opinion.component");
       });
   }
 
@@ -57,5 +72,5 @@ export class ProductDetailsComponent implements OnInit {
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-  
+
 }
