@@ -1,9 +1,9 @@
-/*
- * Header
- */
-
  .masthead {
-    margin-bottom: 2rem;
+    margin-bottom: 5rem;
+}
+
+.inner {
+    padding: 2rem;
 }
 
 .masthead-brand {
