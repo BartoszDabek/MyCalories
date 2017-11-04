@@ -5,7 +5,7 @@ import { DataService } from '../../shared/services/data-service.service';
 import { ProductInterface } from '../../shared/interfaces/product';
 import { LoginService } from '../../shared/services/login-service.service';
 import { Configuration } from '../../app.constants';
-import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbRatingConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-product-details',
@@ -61,11 +61,34 @@ export class ProductDetailsComponent implements OnInit {
     })
       .subscribe(
       res => {
+        this.opinionBody = "";
         this.opinions.push(res);
       },
       err => {
         console.log("Error occurd in addOpinion opinion.component");
       });
+  }
+
+  deleteOpinion(opinion: any) {
+    for (let i = 0; i < this.opinions.length; i++) {
+      if (this.opinions[i] === opinion) {
+        this.dataService.delete("opinion/", opinion.id)
+          .subscribe(
+          res => {
+            this.opinions.splice(i, 1);
+          },
+          err => {
+            console.log("Error occurd in delete_category category.component");
+          });
+      }
+    }
+  }
+
+  private canDeleteOpinion(opinion: any): boolean {
+    if(opinion.user.username === this.loginService.getCurrentUsername() || this.loginService.hasRole("ROLE_ADMIN")) {
+      return true;
+    }
+    return false;
   }
 
 

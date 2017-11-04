@@ -30,4 +30,11 @@ public class OpinionController extends AbstractController <Opinion, OpinionServi
         return super.create(obj);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or @permissionComponent.canDeleteOpinion( #id )")
+    @DeleteMapping("/{id}")
+    public @ResponseBody
+    ResponseEntity<Opinion> delete (@PathVariable Long id) {
+        return super.delete(id);
+    }
+
 }

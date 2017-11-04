@@ -34,6 +34,11 @@ export class LoginService {
       );
   }
 
+  public getCurrentUsername(): string {
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    return currentUser.username;
+  }
+
   public setLoggedOut() {
     localStorage.removeItem("credentials");
     localStorage.removeItem("currentUser");

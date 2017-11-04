@@ -50,13 +50,16 @@
   <div class="opinions-content" *ngFor="let opinion of opinions">
     <hr>
     <div class="opinions-decoration">
-      <div class="opinion-rating">
+      <div class="opinion-rating float-left">
         Rating:
         <ngb-rating [(rate)]="opinion.rating" [readonly]="true" max="5">
           <ng-template let-fill="fill">
             <span class="star" [class.filled]="fill === 100">&#9733;</span>
           </ng-template>
         </ngb-rating>
+      </div>
+      <div class="opinion-buttons">
+        <button class="btn btn-danger" (click)="deleteOpinion(opinion)" *ngIf="canDeleteOpinion(opinion)">Delete</button>
       </div>
       <div class="opinion-date">
         Date added: {{ opinion.addDate }}

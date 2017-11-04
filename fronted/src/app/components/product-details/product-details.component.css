@@ -10,8 +10,16 @@
     margin-bottom: .5em;
 }
 
+.opinion-buttons {
+    text-align: right;
+}
+
 .opinions-content {
     font-size: 18px;
+}
+
+.opinion-date {
+    clear: both;
 }
 
 .opinion-description {
