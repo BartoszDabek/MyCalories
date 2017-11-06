@@ -8,6 +8,7 @@ import pl.mycalories.model.Category;
 import pl.mycalories.model.Opinion;
 import pl.mycalories.service.OpinionService;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @RestController
@@ -25,7 +26,7 @@ public class OpinionController extends AbstractController <Opinion, OpinionServi
     public @ResponseBody
     ResponseEntity<?> create(@RequestBody Opinion obj) {
         if (obj.getAddDate() == null){
-            obj.setAddDate(new Date());
+            obj.setAddDate(LocalDate.now());
         }
         return super.create(obj);
     }

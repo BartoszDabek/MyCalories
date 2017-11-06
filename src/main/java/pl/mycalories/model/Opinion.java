@@ -7,7 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @SequenceGenerator(name = "idgen", sequenceName = "opinion_id_seq", allocationSize = 1)
@@ -15,7 +15,8 @@ public class Opinion extends AbstractModel {
 
     @NotNull
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date addDate;
+    private LocalDate addDate;
+
     @NotNull
     private String description;
 
@@ -29,11 +30,11 @@ public class Opinion extends AbstractModel {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Date getAddDate() {
+    public LocalDate getAddDate() {
         return addDate;
     }
 
-    public void setAddDate(Date addDate) {
+    public void setAddDate(LocalDate addDate) {
         this.addDate = addDate;
     }
 

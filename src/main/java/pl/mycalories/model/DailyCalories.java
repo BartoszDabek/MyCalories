@@ -3,6 +3,7 @@ package pl.mycalories.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ public class DailyCalories extends AbstractModel{
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "day_id")
     @JsonManagedReference
+    @NotNull
     private Day day;
 
     @Embedded
@@ -21,7 +23,7 @@ public class DailyCalories extends AbstractModel{
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "dailyCalories", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private Set<Meal> meals;
+    private Set<Meal> meals = new HashSet<>();
 
     public NutritionalValues getNutritionalValues() {
         return nutritionalValues;

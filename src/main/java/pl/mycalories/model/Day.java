@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -12,10 +14,12 @@ public class Day extends AbstractModel {
 
     @Column
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date date;
+    @NotNull
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     @OneToOne(mappedBy = "day")
@@ -31,11 +35,11 @@ public class Day extends AbstractModel {
         this.user = user;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

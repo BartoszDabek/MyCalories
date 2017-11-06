@@ -34,12 +34,13 @@ CREATE TABLE IF NOT EXISTS users_roles (
 CREATE TABLE IF NOT EXISTS day (
     id          BIGSERIAL PRIMARY KEY UNIQUE,
     user_id     BIGINT REFERENCES users(id),
-    date        DATE
+    date        DATE NOT NULL,
+    CONSTRAINT d_constraint UNIQUE (user_id, date)
 );
 
 CREATE TABLE IF NOT EXISTS daily_calories (
   id                BIGSERIAL PRIMARY KEY UNIQUE,
-  day_id            BIGINT REFERENCES day(id),
+  day_id            BIGINT REFERENCES day(id) NOT NULL,
   calories          INTEGER NOT NULL,
   proteins          INTEGER NOT NULL,
   fats              INTEGER NOT NULL,
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS opinion (
   id            BIGSERIAL PRIMARY KEY UNIQUE,
   product_id    BIGINT REFERENCES product(id),
   user_id       BIGINT REFERENCES users(id),
-  add_date      DATE,
+  add_date      DATE NOT NULL,
   description   VARCHAR(255) NOT NULL,
   rating        INTEGER
 );
