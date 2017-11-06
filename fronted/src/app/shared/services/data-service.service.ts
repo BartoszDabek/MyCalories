@@ -1,4 +1,4 @@
-import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Configuration } from '../../app.constants';
@@ -14,8 +14,8 @@ export class DataService {
         this.actionUrl = Configuration.HOME_URL;
     }
 
-    public getAll<T>(directSource: string): Observable<T> {
-        return this.http.get<T>(this.actionUrl + directSource);
+    public getAll<T>(directSource: string, parameters?: HttpParams): Observable<T> {
+        return this.http.get<T>(this.actionUrl + directSource, {params: parameters});
     }
 
     public getSingle<T>(directSource: string, id: number): Observable<T> {

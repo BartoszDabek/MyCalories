@@ -36,6 +36,9 @@ export class LoginService {
 
   public getCurrentUsername(): string {
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if(currentUser == null) {
+      return "";
+    }
     return currentUser.username;
   }
 
