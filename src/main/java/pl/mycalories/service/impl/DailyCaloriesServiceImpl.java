@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import pl.mycalories.dao.DailyCaloriesDao;
-import pl.mycalories.model.DailyCalories;
-import pl.mycalories.model.Meal;
-import pl.mycalories.model.NutritionalValues;
+import pl.mycalories.model.*;
+import pl.mycalories.security.SecurityUtils;
 import pl.mycalories.service.DailyCaloriesService;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Service
@@ -26,16 +26,14 @@ public class DailyCaloriesServiceImpl extends AbstractServiceImpl<DailyCalories,
     public DailyCalories save(DailyCalories dailyCalories) {
         this.dailyCalories = dailyCalories;
         setMealsNutritionalValues();
-        setNewDate();
         dailyCalories.setNutritionalValues(new NutritionalValues(dailyCalories));
 
         return super.save(dailyCalories);
     }
-// TODO: a co jak ktoś z palca wbije date wysylajac JSON'a ?? !!
-    private void setNewDate() {
-//        if(dailyCalories.getDate() == null) {
-//            dailyCalories.setDate(new Date());
-//        }
+
+    @Override
+    public DailyCalories findByDate(User user, LocalDate date) {
+        return repository.findByDate(user, date);
     }
 
     private void setMealsNutritionalValues() {

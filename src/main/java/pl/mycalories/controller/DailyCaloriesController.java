@@ -6,10 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mycalories.error.ErrorInformation;
 import pl.mycalories.model.DailyCalories;
+import pl.mycalories.model.Day;
 import pl.mycalories.model.Meal;
+import pl.mycalories.security.SecurityUtils;
 import pl.mycalories.service.DailyCaloriesService;
 import pl.mycalories.service.ErrorService;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @RestController
@@ -29,6 +32,18 @@ public class DailyCaloriesController extends AbstractController<DailyCalories, D
         super(service);
     }
 
+    @GetMapping("/date")
+    public ResponseEntity<?> get(@RequestParam("date") String date) {
+        DailyCalories obj = service.findByDate(SecurityUtils.getCurrentUser(), LocalDate.parse(date));
+
+        if(obj == null) {
+            ErrorInformation errorInformation = new ErrorInformation(HttpStatus.NOT_FOUND, "Sorry nie ma mnie");
+            return new ResponseEntity<ErrorInformation>(errorInformation, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<DailyCalories>(obj, HttpStatus.OK);
+    }
+
     @Override
     @PostMapping
     public @ResponseBody
@@ -36,6 +51,11 @@ public class DailyCaloriesController extends AbstractController<DailyCalories, D
         if(errorOccurs(dailyCalories)) {
             return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getErrorStatus());
         }
+
+        Day day = new Day();
+        day.setDate(LocalDate.now());
+        day.setUser(SecurityUtils.getCurrentUser());
+        dailyCalories.setDay(day);
 
         return super.create(dailyCalories);
     }
