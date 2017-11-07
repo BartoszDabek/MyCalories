@@ -15,6 +15,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { AddProductComponent } from './components/product/add-product/add-product.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { SummaryComponent } from './components/summary/summary.component';
 
 import { OrderModule } from 'ngx-order-pipe';
 import { FilterPipe } from './pipes/filter.pipe';
@@ -33,6 +34,7 @@ import { SharedModule } from './shared/shared.module';
     AddProductComponent,
     LoginComponent,
     RegistrationComponent,
+    SummaryComponent,
   ],
   imports: [
     NgbModule.forRoot(),

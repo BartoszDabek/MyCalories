@@ -1,0 +1,63 @@
+.input-wrapper {
+    margin-bottom: 5em;
+}
+
+.button-style {
+    margin-left: 1em;
+}
+
+
+
+ngb-progressbar >>> .bg-violet {
+    background-color: #8a2be2;
+}
+
+ngb-accordion >>> .card {
+    background-color: #333;
+    border: initial;
+    font-size: 18px;
+}
+
+ngb-accordion >>> .card-header {
+    background-color: #413E3E;
+    border: .05rem solid #8b909e;
+    font-size: 20px;
+}
+
+ngb-accordion >>> a {
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+.meals-wrapper {
+    padding-top: 30px;
+    padding-left: 120px;
+    padding-right: 120px;
+}
+
+.meal-nutritional {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.product-wrapper {
+    padding-left: 1em;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.product-wrapper hr {
+    border-color: #fff;
+}
+
+.product-heading {
+    padding-top: .5em;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.btn-wrapper {
+    padding-top: .5em;
+    text-align: right;
+}

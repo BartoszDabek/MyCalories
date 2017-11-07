@@ -7,6 +7,7 @@ import { AddProductComponent } from './components/product/add-product/add-produc
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { SummaryComponent } from './components/summary/summary.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
     { path: 'products/:id', component: ProductDetailsComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegistrationComponent },
+    { path: 'summary', component: SummaryComponent },
   ];
 
 export const AppRoutes = RouterModule.forRoot(appRoutes, { preloadingStrategy: PreloadAllModules });

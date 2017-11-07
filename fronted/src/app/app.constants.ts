@@ -8,4 +8,8 @@ export class Configuration {
     public static get HOME_URL(): string { 
         return this.Server; 
     };
+
+    public static get DATE_NOW() {
+        return new Date();
+    }
 }

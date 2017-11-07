@@ -1,0 +1,86 @@
+<div class="cover-container">
+  <div class="center input-wrapper">
+    <form class="form-inline">
+      <div class="form-group">
+        <div class="input-group">
+          <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+          <button class="input-group-addon" (click)="d.toggle()" type="button">
+            <img src="http://cdn.mysitemyway.com/icons-watermarks/simple-black/bfa/bfa_calendar/bfa_calendar_simple-black_128x128.png"
+              style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+          </button>
+          <button class="btn btn-primary button-style" (click)="summary()">Calculate</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="data-wrapper" *ngIf="dayNoExist()">
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <p>
+            Consumed {{dailyCalories.nutritionalValues.calories}} / 2500 kcal
+            <ngb-progressbar type="success" [value]="(dailyCalories.nutritionalValues.calories * 100) / 2500"></ngb-progressbar>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <p>
+            <ngb-progressbar type="info" [value]="(dailyCalories.nutritionalValues.proteins * 100) / 130"></ngb-progressbar>
+            Proteins {{dailyCalories.nutritionalValues.proteins}} / 130 g
+          </p>
+        </div>
+        <div class="col-sm">
+          <p>
+            <ngb-progressbar type="warning" [value]="(dailyCalories.nutritionalValues.fats * 100) / 100"></ngb-progressbar>
+            Fats {{dailyCalories.nutritionalValues.fats}} / 100 g
+          </p>
+        </div>
+        <div class="col-sm">
+          <p>
+            <ngb-progressbar type="violet" [value]="(dailyCalories.nutritionalValues.carbs * 100) / 350"></ngb-progressbar>
+            Carbs {{dailyCalories.nutritionalValues.carbs}} / 350 g
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="meals-wrapper">
+      <ngb-accordion [closeOthers]="true">
+        <div *ngFor="let meal of dailyCalories.meals">
+          <ngb-panel>
+            <ng-template ngbPanelTitle>
+              {{meal.name}}
+              <div class="meal-nutritional">
+                Proteins: {{meal.nutritionalValues.proteins}} g | Fats: {{meal.nutritionalValues.fats}} g | Carbs: {{meal.nutritionalValues.carbs}}
+                g | {{meal.nutritionalValues.calories}} kcal
+              </div>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <div class="product-wrapper">
+                <div *ngFor="let pm of meal.productMeals">
+                  <div class="product-heading float-left">
+                    {{pm.product.name}}
+                  </div>
+                  <div class="btn-wrapper">
+                    <button class="btn btn-primary" (click)="test()">Edit</button>
+                  </div>
+                  {{pm.amount * 100}} g
+                  <div>
+                    Prot: {{pm.product.nutritionalValues.proteins * pm.amount}} g | Fats: {{pm.product.nutritionalValues.fats * pm.amount}} g
+                    | Carbs: {{pm.product.nutritionalValues.carbs * pm.amount}} g | {{pm.product.nutritionalValues.calories
+                    * pm.amount}} kcal
+                  </div>
+                  <hr>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-panel>
+        </div>
+      </ngb-accordion>
+    </div>
+
+  </div>
+</div>

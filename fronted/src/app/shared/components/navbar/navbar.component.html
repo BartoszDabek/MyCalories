@@ -9,6 +9,7 @@
                 <h3><a class="nav-link" routerLink="/home">Home</a></h3>
                 <h3><a class="nav-link" routerLink="/category">Categories</a></h3>
                 <h3><a class="nav-link" routerLink="/products">Products</a></h3>
+                <h3><a *ngIf="loginService.isLoggedIn()" class="nav-link" routerLink="/summary">Summary</a></h3>
             </nav>
         </div>
     </div>
