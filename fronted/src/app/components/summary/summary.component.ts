@@ -51,8 +51,12 @@ export class SummaryComponent implements OnInit {
       );
   }
 
-  test() {
-    console.log("test");
+  test(object: any) {
+    console.log(object);
+  }
+
+  newProduct() {
+    console.log("nowy produkt");
   }
 
   private returnType(defaultType: string, realValue: number, expectedValue: number): string {
