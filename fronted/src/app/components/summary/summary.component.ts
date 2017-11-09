@@ -51,8 +51,32 @@ export class SummaryComponent implements OnInit {
       );
   }
 
-  test(object: any) {
-    console.log(object);
+  deleteProduct(object: any) {
+    for(let i of this.dailyCalories.meals) {
+      i.productMeals = i.productMeals.filter(item => item !== object);
+    }
+
+    this.dataService.update<DailyCalories>("dailyCalories/", this.dailyCalories.id, this.dailyCalories)
+    .subscribe(
+      res => {
+        this.dailyCalories = res;
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
+  deleteMeal(object: any) {
+    this.dailyCalories.meals = this.dailyCalories.meals.filter(item => item !== object);
+
+    this.dataService.update<DailyCalories>("dailyCalories/", this.dailyCalories.id, this.dailyCalories)
+    .subscribe(
+      res => {
+        this.dailyCalories = res;
+      },
+      err => {
+        console.log(err);
+      });
   }
 
   newProduct() {
@@ -88,8 +112,8 @@ export class SummaryComponent implements OnInit {
     let month = this.appendZeroToNumber(this.model.month);
     let year = this.appendZeroToNumber(this.model.year);
 
-    // return year + "-" + month + "-" + day;
-    return "2017-11-06";
+    return year + "-" + month + "-" + day;
+    // return "2017-11-09";
   }
 
   private appendZeroToNumber(model: any): string {

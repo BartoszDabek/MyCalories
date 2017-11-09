@@ -31,6 +31,10 @@ public class ErrorServiceImpl implements ErrorService {
                 return null;
             }
         }
+
+        if(meal.getProductMeals().isEmpty()) {
+            return null;
+        }
         return new ErrorInformation(HttpStatus.CONFLICT, "You are trying to modify NO-MODIFIER-FIELDS");
     }
 

@@ -12,7 +12,7 @@ import java.util.Set;
 public class DailyCalories extends AbstractModel{
 
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "day_id")
     @JsonManagedReference
     @NotNull
