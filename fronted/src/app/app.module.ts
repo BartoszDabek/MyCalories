@@ -16,9 +16,11 @@ import { AddProductComponent } from './components/product/add-product/add-produc
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { SummaryComponent } from './components/summary/summary.component';
+import { MealsDetailsComponent } from './components/summary/meals-details/meals-details.component';
 
 import { OrderModule } from 'ngx-order-pipe';
 import { FilterPipe } from './pipes/filter.pipe';
+import { SortPipe } from './pipes/sort.pipe';
 
 import { SharedModule } from './shared/shared.module';
 
@@ -26,6 +28,7 @@ import { SharedModule } from './shared/shared.module';
 @NgModule({
   declarations: [
     FilterPipe,
+    SortPipe,
     AppComponent,
     CategoryComponent,
     HomeComponent,
@@ -35,6 +38,7 @@ import { SharedModule } from './shared/shared.module';
     LoginComponent,
     RegistrationComponent,
     SummaryComponent,
+    MealsDetailsComponent,
   ],
   imports: [
     NgbModule.forRoot(),

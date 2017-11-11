@@ -12,7 +12,8 @@ import { DailyCalories } from '../../shared/interfaces/daily-calories'
 })
 export class SummaryComponent implements OnInit {
 
-  private endPoint: string = 'dailyCalories/date';
+  private endPoint: string = 'dailyCalories/'
+  private getEndPoint: string = 'dailyCalories/date';
   model = {
     year: Configuration.DATE_NOW.getFullYear(), 
     month: Configuration.DATE_NOW.getMonth() + 1, 
@@ -20,12 +21,11 @@ export class SummaryComponent implements OnInit {
   };
   dailyCalories: DailyCalories;
 
-
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
     let params = new HttpParams().set("date", this.selectedDateToParam());
-    this.dataService.getAll(this.endPoint, params)
+    this.dataService.getAll(this.getEndPoint, params)
       .subscribe(
         res => {
           this.dailyCalories = res;
@@ -36,51 +36,29 @@ export class SummaryComponent implements OnInit {
       );
   }
 
+  update(item) {
+    this.dataService.update<DailyCalories>(this.endPoint, this.dailyCalories.id, item)
+    .subscribe(
+      res => {
+        this.dailyCalories = res;
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
   summary() {
     let params = new HttpParams().set("date", this.selectedDateToParam());
-    this.dataService.getAll(this.endPoint, params)
+    this.dataService.getAll(this.getEndPoint, params)
       .subscribe(
         res => {
           this.dailyCalories = res;
-          console.log(res);
         },
         err => {
           this.dailyCalories = undefined;
           console.log("error in getAll summary component");
         }
       );
-  }
-
-  deleteProduct(object: any) {
-    for(let i of this.dailyCalories.meals) {
-      i.productMeals = i.productMeals.filter(item => item !== object);
-    }
-
-    this.dataService.update<DailyCalories>("dailyCalories/", this.dailyCalories.id, this.dailyCalories)
-    .subscribe(
-      res => {
-        this.dailyCalories = res;
-      },
-      err => {
-        console.log(err);
-      });
-  }
-
-  deleteMeal(object: any) {
-    this.dailyCalories.meals = this.dailyCalories.meals.filter(item => item !== object);
-
-    this.dataService.update<DailyCalories>("dailyCalories/", this.dailyCalories.id, this.dailyCalories)
-    .subscribe(
-      res => {
-        this.dailyCalories = res;
-      },
-      err => {
-        console.log(err);
-      });
-  }
-
-  newProduct() {
-    console.log("nowy produkt");
   }
 
   private returnType(defaultType: string, realValue: number, expectedValue: number): string {
@@ -113,7 +91,6 @@ export class SummaryComponent implements OnInit {
     let year = this.appendZeroToNumber(this.model.year);
 
     return year + "-" + month + "-" + day;
-    // return "2017-11-09";
   }
 
   private appendZeroToNumber(model: any): string {

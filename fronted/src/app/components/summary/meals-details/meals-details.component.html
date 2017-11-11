@@ -1,0 +1,68 @@
+<div ng-controller="meal" class="meal-box">
+  <header class="meal-header">
+    <h3 class="float-left">{{meal.name}}</h3>
+    <button class="close close-btn" (click)="deleteMeal(meal)">&#10006;</button>
+    <button *ngIf="!editProductMeal" class="close edit-btn" (click)="editProduct()">
+      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    </button>
+    <button *ngIf="editProductMeal" class="btn btn-danger edit-btn close" (click)="cancelEdit()">Cancel</button>
+    <button *ngIf="editProductMeal" class="btn btn-success edit-btn close" (click)="saveProduct(meal)">Save</button>
+  </header>
+  <table class="table table-borderless">
+    <thead>
+      <tr>
+        <th class="col-50">Product</th>
+        <th>Amount</th>
+        <th>KCAL</th>
+        <th>Prot.</th>
+        <th>Fats</th>
+        <th>Carbs</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pm of meal.productMeals">
+        <td class="product-name">{{ pm.product.name }}</td>
+        <td *ngIf="!editProductMeal" class="binding">{{ pm.amount * 100 }} g</td>
+        <td *ngIf="editProductMeal" class="binding">
+          <input [(ngModel)]="pm.amount" type="text" class="input-editor" value="{{pm.amount}}" maxlength="4"> {{pm.amount}}
+          <span>g</span>
+        </td>
+        <td class="binding">{{ pm.product.nutritionalValues.calories * pm.amount }}</td>
+        <td class="binding">{{ pm.product.nutritionalValues.proteins * pm.amount }}</td>
+        <td class="binding">{{ pm.product.nutritionalValues.fats * pm.amount }}</td>
+        <td class="binding">{{ pm.product.nutritionalValues.carbs * pm.amount }}</td>
+        <td class="binding">
+          <button class="close close-btn" (click)="deleteProduct(pm)">&times;</button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2">
+          <strong class="product-btn" role="button" (click)="open(meal)">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Add new product
+          </strong>
+        </td>
+        <td class="bold binding">{{getSum('calories')}}</td>
+        <td class="bold binding">{{getSum('proteins')}}</td>
+        <td class="bold binding">{{getSum('fats')}}</td>
+        <td class="bold binding">{{getSum('carbs')}}</td>
+        <td class="bold binding"></td>
+      </tr>
+      <tr *ngIf="edit">
+        <td ng-controller="product-meal" colspan="7">
+          <ng-template #rt let-r="result" let-t="product">
+            {{ r.name}}
+          </ng-template>
+
+          <input id="typeahead-template" type="text" class="form-control product-editor" [(ngModel)]="product" [ngbTypeahead]="search" [resultTemplate]="rt"
+            [inputFormatter]="formatter" placeholder="Enter the product name" />
+
+          <button class="btn btn-success add-product-btn" (click)="addProductToMeal()">Add product</button>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
