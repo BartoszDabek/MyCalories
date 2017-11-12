@@ -15,8 +15,8 @@ export class SummaryComponent implements OnInit {
   private endPoint: string = 'dailyCalories/'
   private getEndPoint: string = 'dailyCalories/date';
   model = {
-    year: Configuration.DATE_NOW.getFullYear(), 
-    month: Configuration.DATE_NOW.getMonth() + 1, 
+    year: Configuration.DATE_NOW.getFullYear(),
+    month: Configuration.DATE_NOW.getMonth() + 1,
     day: Configuration.DATE_NOW.getDate()
   };
   dailyCalories: DailyCalories;
@@ -27,18 +27,18 @@ export class SummaryComponent implements OnInit {
     let params = new HttpParams().set("date", this.selectedDateToParam());
     this.dataService.getAll(this.getEndPoint, params)
       .subscribe(
-        res => {
-          this.dailyCalories = res;
-        },
-        err => {
-          console.log("error in getAll summary component");
-        }
+      res => {
+        this.dailyCalories = res;
+      },
+      err => {
+        console.log("error in getAll summary component");
+      }
       );
   }
 
   update(item) {
     this.dataService.update<DailyCalories>(this.endPoint, this.dailyCalories.id, item)
-    .subscribe(
+      .subscribe(
       res => {
         this.dailyCalories = res;
       },
@@ -48,21 +48,52 @@ export class SummaryComponent implements OnInit {
   }
 
   summary() {
+    if (this.dailyCalories.nutritionalValues.calories === 0) {
+      this.dataService.add(this.endPoint, {
+        day: {
+          date: this.selectedDateToParam()
+        }
+      })
+        .subscribe(
+        res => {
+          this.dailyCalories = res;
+          console.log(res);
+        },
+        err => {
+          console.log(err);
+        }
+        )
+    }
+
     let params = new HttpParams().set("date", this.selectedDateToParam());
     this.dataService.getAll(this.getEndPoint, params)
       .subscribe(
-        res => {
-          this.dailyCalories = res;
-        },
-        err => {
-          this.dailyCalories = undefined;
-          console.log("error in getAll summary component");
-        }
+      res => {
+        this.dailyCalories = res;
+      },
+      err => {
+        this.dailyCalories = undefined;
+        console.log("error in getAll summary component");
+      }
       );
   }
 
+  addMeal() {
+    this.dailyCalories.meals.unshift({
+      id: 0,
+      name: undefined,
+      nutritionalValues: {
+        calories: 0,
+        proteins: 0,
+        fats: 0,
+        carbs: 0
+      },
+      productMeals: []
+    })
+  }
+
   private returnType(defaultType: string, realValue: number, expectedValue: number): string {
-    if(realValue > 1200) {
+    if (realValue > 1200) {
       return "danger"
     }
     return defaultType;
@@ -77,12 +108,13 @@ export class SummaryComponent implements OnInit {
 
   private setDefaultValues() {
     this.dailyCalories = {
-      'nutritionalValues' : {
-      'calories' : 0,
-      'proteins' : 0,
-      'fats' : 0,
-      'carbs' : 0
-    }};
+      'nutritionalValues': {
+        'calories': 0,
+        'proteins': 0,
+        'fats': 0,
+        'carbs': 0
+      }
+    };
   }
 
   private selectedDateToParam(): string {

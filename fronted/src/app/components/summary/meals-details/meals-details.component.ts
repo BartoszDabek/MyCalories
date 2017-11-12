@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
 })
 export class MealsDetailsComponent implements OnInit {
 
-  private edit: boolean;
+  private addNewProduct: boolean;
   private editProductMeal: boolean;
   private mealCopy: Meal;
   private products: ProductInterface[];
@@ -27,6 +27,9 @@ export class MealsDetailsComponent implements OnInit {
   @Output() dailyCaloriesChange: EventEmitter<DailyCalories> = new EventEmitter<DailyCalories>();
 
   ngOnInit() {
+    if(this.meal.name === undefined) {
+      this.editProductMeal = true;
+    }
   }
 
   deleteProduct(object: any) {
@@ -74,7 +77,7 @@ export class MealsDetailsComponent implements OnInit {
   }
 
   open(object: any) {
-    this.edit = !this.edit;
+    this.addNewProduct = true;
     this.dataService.getAll<ProductInterface[]>("product/")
       .subscribe(
       res => {
@@ -94,6 +97,7 @@ export class MealsDetailsComponent implements OnInit {
     });
 
     this.product = undefined;
+    this.addNewProduct = false;
   }
 
   search = (text$: Observable<string>) =>

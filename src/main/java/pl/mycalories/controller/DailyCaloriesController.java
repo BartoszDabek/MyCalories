@@ -52,10 +52,7 @@ public class DailyCaloriesController extends AbstractController<DailyCalories, D
             return new ResponseEntity<ErrorInformation>(errorInformation, errorInformation.getErrorStatus());
         }
 
-        Day day = new Day();
-        day.setDate(LocalDate.now());
-        day.setUser(SecurityUtils.getCurrentUser());
-        dailyCalories.setDay(day);
+        dailyCalories.getDay().setUser(SecurityUtils.getCurrentUser());
 
         return super.create(dailyCalories);
     }

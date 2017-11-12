@@ -36,3 +36,11 @@ ngb-accordion >>> a {
     padding-right: 120px;
 }
 
+.add-meal-btn-box {
+    text-align: center;
+}
+
+.btn-round {
+    border-radius: 17px;
+}
+

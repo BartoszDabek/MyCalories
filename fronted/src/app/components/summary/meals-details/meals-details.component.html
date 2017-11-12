@@ -1,6 +1,10 @@
 <div ng-controller="meal" class="meal-box">
   <header class="meal-header">
-    <h3 class="float-left">{{meal.name}}</h3>
+    <h3 *ngIf="!editProductMeal" class="float-left">{{meal.name}}</h3>
+    <div class="float-left">
+    <input *ngIf="editProductMeal" class="form-control name-editor" placeholder="{{meal.name === undefined ? 'Enter meal name' : meal.name}}"
+      value="{{meal.name}}" [(ngModel)]="meal.name">
+    </div>
     <button class="close close-btn" (click)="deleteMeal(meal)">&#10006;</button>
     <button *ngIf="!editProductMeal" class="close edit-btn" (click)="editProduct()">
       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -25,7 +29,7 @@
         <td class="product-name">{{ pm.product.name }}</td>
         <td *ngIf="!editProductMeal" class="binding">{{ pm.amount * 100 }} g</td>
         <td *ngIf="editProductMeal" class="binding">
-          <input [(ngModel)]="pm.amount" type="text" class="input-editor" value="{{pm.amount}}" maxlength="4"> {{pm.amount}}
+          <input [(ngModel)]="pm.amount" type="text" class="input-editor" value="{{pm.amount}}" maxlength="4">
           <span>g</span>
         </td>
         <td class="binding">{{ pm.product.nutritionalValues.calories * pm.amount }}</td>
@@ -40,7 +44,7 @@
     <tfoot>
       <tr>
         <td colspan="2">
-          <strong class="product-btn" role="button" (click)="open(meal)">
+          <strong *ngIf="!addNewProduct" class="product-btn" role="button" (click)="open(meal)">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Add new product
           </strong>
@@ -51,14 +55,14 @@
         <td class="bold binding">{{getSum('carbs')}}</td>
         <td class="bold binding"></td>
       </tr>
-      <tr *ngIf="edit">
+      <tr *ngIf="addNewProduct">
         <td ng-controller="product-meal" colspan="7">
           <ng-template #rt let-r="result" let-t="product">
             {{ r.name}}
           </ng-template>
 
-          <input id="typeahead-template" type="text" class="form-control product-editor" [(ngModel)]="product" [ngbTypeahead]="search" [resultTemplate]="rt"
-            [inputFormatter]="formatter" placeholder="Enter the product name" />
+          <input id="typeahead-template" type="text" class="form-control product-editor" [(ngModel)]="product" [ngbTypeahead]="search"
+            [resultTemplate]="rt" [inputFormatter]="formatter" placeholder="Enter the product name" />
 
           <button class="btn btn-success add-product-btn" (click)="addProductToMeal()">Add product</button>
         </td>

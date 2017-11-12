@@ -46,7 +46,9 @@
         </div>
       </div>
     </div>
-
+    <div class="add-meal-btn-box">
+      <button class="btn btn-primary btn-round" (click)="addMeal()">Add meal</button>
+    </div>
     <div class="meals-wrapper">
       <app-meals-details *ngFor="let meal of dailyCalories.meals | sort: 'id' " [meal]="meal" [dailyCalories]="dailyCalories" (dailyCaloriesChange)="update($event)">
       </app-meals-details>
