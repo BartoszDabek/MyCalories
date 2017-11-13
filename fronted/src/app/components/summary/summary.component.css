@@ -6,7 +6,10 @@
     margin-left: 1em;
 }
 
-
+.calendar-button {
+    cursor: pointer; 
+    font-size: 18px;
+}
 
 ngb-progressbar >>> .bg-violet {
     background-color: #8a2be2;
@@ -39,8 +42,3 @@ ngb-accordion >>> a {
 .add-meal-btn-box {
     text-align: center;
 }
-
-.btn-round {
-    border-radius: 17px;
-}
-

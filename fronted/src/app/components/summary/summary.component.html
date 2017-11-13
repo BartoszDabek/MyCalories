@@ -4,11 +4,10 @@
       <div class="form-group">
         <div class="input-group">
           <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-          <button class="input-group-addon" (click)="d.toggle()" type="button">
-            <img src="http://cdn.mysitemyway.com/icons-watermarks/simple-black/bfa/bfa_calendar/bfa_calendar_simple-black_128x128.png"
-              style="width: 1.2rem; height: 1rem; cursor: pointer;" />
+          <button class="input-group-addon calendar-button" (click)="d.toggle()" type="button">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
           </button>
-          <button class="btn btn-primary button-style" (click)="summary()">Calculate</button>
+          <button class="btn btn-primary button-style btn-round" (click)="summary()">Calculate</button>
         </div>
       </div>
     </form>
@@ -21,34 +20,36 @@
         <div class="col">
           <p>
             Consumed {{dailyCalories.nutritionalValues.calories}} / 2500 kcal
-            <ngb-progressbar type="success" [value]="(dailyCalories.nutritionalValues.calories * 100) / 2500"></ngb-progressbar>
+            <ngb-progressbar type="{{returnColor('success', dailyCalories.nutritionalValues.proteins, 2500)}}" [value]="(dailyCalories.nutritionalValues.calories * 100) / 2500"></ngb-progressbar>
           </p>
         </div>
       </div>
       <div class="row">
         <div class="col-sm">
           <p>
-            <ngb-progressbar type="info" [value]="(dailyCalories.nutritionalValues.proteins * 100) / 130"></ngb-progressbar>
+            <ngb-progressbar type="{{returnColor('info', dailyCalories.nutritionalValues.proteins, 130)}}" [value]="(dailyCalories.nutritionalValues.proteins * 100) / 130"></ngb-progressbar>
             Proteins {{dailyCalories.nutritionalValues.proteins}} / 130 g
           </p>
         </div>
         <div class="col-sm">
           <p>
-            <ngb-progressbar type="warning" [value]="(dailyCalories.nutritionalValues.fats * 100) / 100"></ngb-progressbar>
+            <ngb-progressbar type="{{returnColor('warning', dailyCalories.nutritionalValues.proteins, 100)}}" [value]="(dailyCalories.nutritionalValues.fats * 100) / 100"></ngb-progressbar>
             Fats {{dailyCalories.nutritionalValues.fats}} / 100 g
           </p>
         </div>
         <div class="col-sm">
           <p>
-            <ngb-progressbar type="violet" [value]="(dailyCalories.nutritionalValues.carbs * 100) / 350"></ngb-progressbar>
+            <ngb-progressbar type="{{returnColor('violet', dailyCalories.nutritionalValues.proteins, 350)}}" [value]="(dailyCalories.nutritionalValues.carbs * 100) / 350"></ngb-progressbar>
             Carbs {{dailyCalories.nutritionalValues.carbs}} / 350 g
           </p>
         </div>
       </div>
     </div>
+
     <div class="add-meal-btn-box">
       <button class="btn btn-primary btn-round" (click)="addMeal()">Add meal</button>
     </div>
+
     <div class="meals-wrapper">
       <app-meals-details *ngFor="let meal of dailyCalories.meals | sort: 'id' " [meal]="meal" [dailyCalories]="dailyCalories" (dailyCaloriesChange)="update($event)">
       </app-meals-details>

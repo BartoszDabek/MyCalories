@@ -24,16 +24,19 @@ export class SummaryComponent implements OnInit {
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    let params = new HttpParams().set("date", this.selectedDateToParam());
-    this.dataService.getAll(this.getEndPoint, params)
-      .subscribe(
-      res => {
-        this.dailyCalories = res;
-      },
-      err => {
-        console.log("error in getAll summary component");
-      }
-      );
+    this.getSelectedDay();
+  }
+
+  summary() {
+    this.getSelectedDay();
+  }
+
+  addMeal() {
+    if (this.dayNoDefined()) {
+      this.createNewDay();
+    } else {
+      this.pushToMeals();
+    }
   }
 
   update(item) {
@@ -47,24 +50,9 @@ export class SummaryComponent implements OnInit {
       });
   }
 
-  summary() {
-    if (this.dailyCalories.nutritionalValues.calories === 0) {
-      this.dataService.add(this.endPoint, {
-        day: {
-          date: this.selectedDateToParam()
-        }
-      })
-        .subscribe(
-        res => {
-          this.dailyCalories = res;
-          console.log(res);
-        },
-        err => {
-          console.log(err);
-        }
-        )
-    }
 
+
+  private getSelectedDay() {
     let params = new HttpParams().set("date", this.selectedDateToParam());
     this.dataService.getAll(this.getEndPoint, params)
       .subscribe(
@@ -73,12 +61,30 @@ export class SummaryComponent implements OnInit {
       },
       err => {
         this.dailyCalories = undefined;
-        console.log("error in getAll summary component");
-      }
-      );
+      });
   }
 
-  addMeal() {
+  private dayNoDefined(): boolean {
+    return this.dailyCalories.id === undefined ? true : false;
+  }
+
+  private createNewDay() {
+    this.dataService.add(this.endPoint, {
+      day: {
+        date: this.selectedDateToParam()
+      }
+    })
+      .subscribe(
+      res => {
+        this.dailyCalories = res;
+        this.pushToMeals();
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
+  private pushToMeals() {
     this.dailyCalories.meals.unshift({
       id: 0,
       name: undefined,
@@ -89,18 +95,19 @@ export class SummaryComponent implements OnInit {
         carbs: 0
       },
       productMeals: []
-    })
+    });
   }
 
-  private returnType(defaultType: string, realValue: number, expectedValue: number): string {
-    if (realValue > 1200) {
+
+  private returnColor(defaultColor: string, realValue: number, expectedValue: number): string {
+    if (realValue > expectedValue) {
       return "danger"
     }
-    return defaultType;
+    return defaultColor;
   }
 
   private dayNoExist(): boolean {
-    if (this.dailyCalories == null) {
+    if (this.dailyCalories === undefined) {
       this.setDefaultValues();
     }
     return true;
@@ -108,12 +115,13 @@ export class SummaryComponent implements OnInit {
 
   private setDefaultValues() {
     this.dailyCalories = {
-      'nutritionalValues': {
-        'calories': 0,
-        'proteins': 0,
-        'fats': 0,
-        'carbs': 0
-      }
+      nutritionalValues: {
+        calories: 0,
+        proteins: 0,
+        fats: 0,
+        carbs: 0
+      },
+      id: undefined
     };
   }
 
