@@ -35,4 +35,13 @@ public class CategoryServiceImpl extends AbstractServiceImpl<Category, Long, Cat
         return super.save(category);
     }
 
+    @Override
+    public Category findByName(String name) {
+        return repository.findByName(name);
+    }
+
+    @Override
+    public Long deleteByName(String name) {
+        return repository.deleteByName(name);
+    }
 }
