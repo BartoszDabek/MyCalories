@@ -1,4 +1,4 @@
-package utils;
+package pl.mycalories.components;
 
 import com.googlecode.lanterna.gui2.*;
 
@@ -14,7 +14,6 @@ public class MainMenu {
 
         header.addComponent(new Button("Categories", () -> new Categories(gui)));
         header.addComponent(new Button("Products", () -> new Products(gui)));
-        header.addComponent(new Button("Register", () -> new Register(gui)));
         header.addComponent(new Button("Exit", () -> exitApp()));
 
         window.setComponent(header);

@@ -1,8 +1,6 @@
-package utils;
-
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
-import utils.MainMenu;
+import pl.mycalories.components.MainMenu;
 
 import java.util.Arrays;
 

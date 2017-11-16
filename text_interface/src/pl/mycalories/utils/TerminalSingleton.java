@@ -1,4 +1,4 @@
-package utils;
+package pl.mycalories.utils;
 
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;

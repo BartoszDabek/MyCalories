@@ -1,4 +1,4 @@
-package utils;
+package pl.mycalories;
 
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.DefaultWindowManager;
@@ -10,8 +10,8 @@ import com.googlecode.lanterna.terminal.Terminal;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import pl.mycalories.CalorieeCApplication;
-import utils.MainMenu;
+import pl.mycalories.utils.TerminalSingleton;
+import pl.mycalories.components.MainMenu;
 
 import java.io.IOException;
 
