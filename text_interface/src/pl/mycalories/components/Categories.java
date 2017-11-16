@@ -1,22 +1,19 @@
 package utils;
 
 import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import com.googlecode.lanterna.gui2.dialogs.TextInputDialogBuilder;
 import com.googlecode.lanterna.gui2.table.Table;
 import com.googlecode.lanterna.gui2.table.TableModel;
+import helpers.Helper;
 import pl.mycalories.model.Category;
 import pl.mycalories.service.CategoryService;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Categories {
 
     private MultiWindowTextGUI gui;
-    private CategoryService service = Main.ctx.getBean(CategoryService.class);
+    private CategoryService categoryService = Main.ctx.getBean(CategoryService.class);
     private Table<String> table;
     private TableModel<String> model;
     private List<Category> categories;
@@ -26,14 +23,10 @@ public class Categories {
         init();
     }
 
-    public List<Category> getAllCategories() {
-        return service.getAll();
-    }
-
     private void init() {
         final BasicWindow window = new BasicWindow("Categories");
 
-        categories = getAllCategories();
+        categories = categoryService.getAll();
         table = new Table<String>("#", "Name");
         model = table.getTableModel();
 
@@ -59,36 +52,36 @@ public class Categories {
     }
 
     private void addNewCategory() {
-        String name = askForAString("Enter category name");
+        String name = Helper.askForAString(gui, "Enter category name");
 
         if (name != null) {
             try {
                 if (name.trim().equals("")) {
-                    exceptionMessageDialog("Adding unsuccessful - missing name!");
+                    Helper.exceptionMessageDialog(gui, "Adding unsuccessful - missing name!");
                     return;
                 }
 
                 Category category = new Category();
                 category.setName(name);
-                Category savedCategory = service.save(category);
+                Category savedCategory = categoryService.save(category);
 
                 if (savedCategory != null) {
                     model.addRow(Integer.toString(model.getRowCount() + 1), savedCategory.getName());
                 }
             } catch (Exception e) {
-                exceptionMessageDialog("Adding unsuccessful - category with that name already exists");
+                Helper.exceptionMessageDialog(gui, "Adding unsuccessful - category with that name already exists");
             }
         }
     }
 
     private void removeCategory() {
-        String numberAsText = askForANumber("Enter row # to remove(1 -" + model.getRowCount() + ")");
+        String numberAsText = Helper.askForANumber(gui, "Enter row # to remove(1 -" + model.getRowCount() + ")");
 
         if (numberAsText != null) {
             try {
                 int rowToDelete = Integer.parseInt(numberAsText) - 1;
                 String nameToDelete = model.getCell(1, rowToDelete);
-                Long deletedCategory = service.deleteByName(nameToDelete);
+                Long deletedCategory = categoryService.deleteByName(nameToDelete);
 
                 if (deletedCategory == 1) {
                     model.removeRow(rowToDelete);
@@ -97,33 +90,9 @@ public class Categories {
                     }
                 }
             } catch (Exception e) {
-                exceptionMessageDialog("Deleting unsuccessful");
+                Helper.exceptionMessageDialog(gui, "Deleting unsuccessful");
             }
         }
-    }
-
-    private String askForAString(String title) {
-        return new TextInputDialogBuilder()
-                .setTitle(title)
-                .build()
-                .showDialog(gui);
-    }
-
-    private String askForANumber(String title) {
-        return new TextInputDialogBuilder()
-                .setTitle(title)
-                .setValidationPattern(Pattern.compile("[0-9]+"), "Not a number")
-                .build()
-                .showDialog(gui);
-    }
-
-    private void exceptionMessageDialog(String message) {
-        new MessageDialogBuilder()
-                .setTitle("Warning")
-                .setText(message)
-                .addButton(MessageDialogButton.Close)
-                .build()
-                .showDialog(gui);
     }
 
 }

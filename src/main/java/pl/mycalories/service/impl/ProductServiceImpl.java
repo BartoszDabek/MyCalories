@@ -29,4 +29,9 @@ public class ProductServiceImpl extends AbstractServiceImpl<Product, Long, Produ
     public Product findByName(String name) {
         return repository.findByName(name);
     }
+
+    @Override
+    public Long deleteByName(String name) {
+        return repository.deleteByName(name);
+    }
 }

@@ -4,4 +4,5 @@ import pl.mycalories.model.Product;
 
 public interface ProductService extends AbstractService <Product, Long> {
     Product findByName(String name);
+    Long deleteByName(String name);
 }

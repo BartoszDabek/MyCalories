@@ -12,9 +12,8 @@ public class MainMenu {
         Panel header = new Panel(new LinearLayout(Direction.HORIZONTAL));
         final BasicWindow window = new BasicWindow();
 
-        header.addComponent(new Button("Submit"));
-        header.addComponent(new Button("Force"));
         header.addComponent(new Button("Categories", () -> new Categories(gui)));
+        header.addComponent(new Button("Products", () -> new Products(gui)));
         header.addComponent(new Button("Register", () -> new Register(gui)));
         header.addComponent(new Button("Exit", () -> exitApp()));
 
