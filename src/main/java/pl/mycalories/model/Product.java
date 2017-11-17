@@ -21,7 +21,7 @@ public class Product extends AbstractModel {
     @JsonIgnore
     private Set<ProductMeal> productMeals;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Opinion> opinions;
 

@@ -4,15 +4,16 @@ import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
 import com.googlecode.lanterna.gui2.table.TableModel;
 import pl.mycalories.Main;
-import pl.mycalories.utils.Helper;
 import pl.mycalories.model.Product;
 import pl.mycalories.service.ProductService;
+import pl.mycalories.utils.Helper;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Products {
 
+    private final BasicWindow window = new BasicWindow("Products");
     private MultiWindowTextGUI gui;
     private ProductService productService = Main.ctx.getBean(ProductService.class);
     private Table<String> table;
@@ -25,8 +26,6 @@ public class Products {
     }
 
     private void init() {
-        final BasicWindow window = new BasicWindow("Products");
-
         products = productService.getAll();
         table = new Table<String>("#",
                 "Name",
@@ -36,6 +35,13 @@ public class Products {
                 "Fats",
                 "Carbs");
         model = table.getTableModel();
+
+        table.setSelectAction(() -> {
+            String productName = table.getTableModel().getCell(1, table.getSelectedRow());
+            Product selectedProduct = productService.findByName(productName);
+            new ProductOpinions(gui, selectedProduct);
+        });
+
 
         int counter = 1;
         for (Product p : products) {
