@@ -4,7 +4,6 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.TableModel;
 import pl.mycalories.Main;
-import pl.mycalories.utils.Helper;
 import pl.mycalories.model.Category;
 import pl.mycalories.model.NutritionalValues;
 import pl.mycalories.model.Product;
@@ -15,12 +14,10 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class NewProduct {
+public class NewProduct extends AbstractWindow {
 
-    private final String regexPattern = "^\\d{0,4}$";
-
-    private MultiWindowTextGUI gui;
-    private BasicWindow window;
+    // max 4 digits
+    private final String inputNumbersRegex = "^\\d{0,4}$";
 
     private ProductService productService = Main.ctx.getBean(ProductService.class);
     private CategoryService categoryService = Main.ctx.getBean(CategoryService.class);
@@ -29,7 +26,7 @@ public class NewProduct {
     private ComboBox<String> categoriesBox;
 
     private Panel mainPanel;
-    private Panel boxPanel;
+    private Panel inputsAndLabelsPanel;
     private Panel buttonPanel;
 
     private TextBox name;
@@ -40,25 +37,21 @@ public class NewProduct {
 
     private TableModel<String> model;
 
-    public NewProduct(MultiWindowTextGUI gui, TableModel<String> model) {
-        this.gui = gui;
+    public NewProduct(MultiWindowTextGUI gui, String title, TableModel<String> model) {
+        super(gui, title);
         this.model = model;
         init();
     }
 
     private void init() {
         initComponents();
-        addBoxPanelComponents();
-        mainPanel.addComponent(boxPanel);
+        addInputAndLabelsToScreen();
+        getCategoriesAndAddToScreen();
 
-        getCategoriesAndAddToCategoriesBox();
-        addCategoriesBoxToMainPanel();
         mainPanel.addComponent(new Separator(Direction.HORIZONTAL)
                 .setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Fill)));
 
-        buttonPanel.addComponent(new Button("Create", () -> {
-            addNewProduct();
-        }));
+        buttonPanel.addComponent(new Button("Create", () -> addNewProduct()));
         buttonPanel.addComponent(new Button("Cancel", () -> window.close()));
 
         mainPanel.addComponent(buttonPanel);
@@ -66,53 +59,45 @@ public class NewProduct {
         window.setComponent(mainPanel);
         window.setHints(Arrays.asList(Window.Hint.CENTERED));
         window.setCloseWindowWithEscape(true);
-        gui.addWindow(window);
     }
 
     private void initComponents() {
-        window = new BasicWindow("New product creator");
+        mainPanel = new Panel();
+        inputsAndLabelsPanel = new Panel(new GridLayout(2));
+        buttonPanel = new Panel(new LinearLayout(Direction.HORIZONTAL));
+    }
 
+    private void addInputAndLabelsToScreen() {
+        name = new TextBox();
+        calories = new TextBox().setValidationPattern(Pattern.compile(inputNumbersRegex));
+        proteins = new TextBox().setValidationPattern(Pattern.compile(inputNumbersRegex));
+        fats = new TextBox().setValidationPattern(Pattern.compile(inputNumbersRegex));
+        carbs = new TextBox().setValidationPattern(Pattern.compile(inputNumbersRegex));
+
+        inputsAndLabelsPanel.addComponent(new Label("Name"));
+        inputsAndLabelsPanel.addComponent(name);
+        inputsAndLabelsPanel.addComponent(new Label("Calories"));
+        inputsAndLabelsPanel.addComponent(calories);
+        inputsAndLabelsPanel.addComponent(new Label("Proteins"));
+        inputsAndLabelsPanel.addComponent(proteins);
+        inputsAndLabelsPanel.addComponent(new Label("Fats"));
+        inputsAndLabelsPanel.addComponent(fats);
+        inputsAndLabelsPanel.addComponent(new Label("Carbs"));
+        inputsAndLabelsPanel.addComponent(carbs);
+
+        mainPanel.addComponent(inputsAndLabelsPanel);
+    }
+
+    private void getCategoriesAndAddToScreen() {
         categoriesMap = new HashMap<Long, String>();
         categoriesBox = new ComboBox<String>();
 
-        mainPanel = new Panel();
-        boxPanel = new Panel(new GridLayout(2));
-        buttonPanel = new Panel(new LinearLayout(Direction.HORIZONTAL));
-
-        name = new TextBox();
-        calories = new TextBox().setValidationPattern(Pattern.compile(regexPattern));
-        proteins = new TextBox().setValidationPattern(Pattern.compile(regexPattern));
-        fats = new TextBox().setValidationPattern(Pattern.compile(regexPattern));
-        carbs = new TextBox().setValidationPattern(Pattern.compile(regexPattern));
-    }
-
-    private void addBoxPanelComponents() {
-        boxPanel.addComponent(new Label("Name"));
-        boxPanel.addComponent(name);
-        boxPanel.addComponent(new Label("Calories"));
-        boxPanel.addComponent(calories);
-        boxPanel.addComponent(new Label("Proteins"));
-        boxPanel.addComponent(proteins);
-        boxPanel.addComponent(new Label("Fats"));
-        boxPanel.addComponent(fats);
-        boxPanel.addComponent(new Label("Carbs"));
-        boxPanel.addComponent(carbs);
-    }
-
-    private void getCategoriesAndAddToCategoriesBox() {
         List<Category> categories = categoryService.getAll();
+        categories.forEach(category -> categoriesMap.put(category.getId(), category.getName()));
 
-        for (Category c : categories) {
-            categoriesMap.put(c.getId(), c.getName());
-        }
+        List<String> categoriesList = new ArrayList<String>(categoriesMap.values());
+        categoriesList.forEach(name -> categoriesBox.addItem(name));
 
-        List<String> list = new ArrayList<String>(categoriesMap.values());
-        for (String s : list) {
-            categoriesBox.addItem(s);
-        }
-    }
-
-    private void addCategoriesBoxToMainPanel() {
         mainPanel.addComponent(new EmptySpace(TerminalSize.ONE));
         mainPanel.addComponent(Panels.horizontal(
                 categoriesBox.withBorder(Borders.singleLineBevel("Category"))
@@ -149,18 +134,15 @@ public class NewProduct {
                 }
                 window.close();
             } catch (Exception e) {
-                Helper.exceptionMessageDialog(gui, "            Some error occured!\nMaybe product with such a name already exists");
+                popupMessageDialog(gui, "            Some error occured!\nMaybe product with such a name already exists");
             }
         } else {
-            Helper.exceptionMessageDialog(gui, "You have to fill all fields!");
+            popupMessageDialog(gui, "You have to fill all fields!");
         }
     }
 
     private boolean fieldsAreFilled() {
-        if (Stream.of(name, calories, proteins, fats, carbs).anyMatch(x -> x.getText().trim().equals(""))) {
-            return false;
-        }
-        return true;
+        return !Stream.of(name, calories, proteins, fats, carbs).anyMatch(x -> x.getText().trim().equals(""));
     }
 
 }

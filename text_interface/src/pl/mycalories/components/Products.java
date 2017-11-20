@@ -6,22 +6,20 @@ import com.googlecode.lanterna.gui2.table.TableModel;
 import pl.mycalories.Main;
 import pl.mycalories.model.Product;
 import pl.mycalories.service.ProductService;
-import pl.mycalories.utils.Helper;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Products {
+public class Products extends AbstractWindow {
 
-    private final BasicWindow window = new BasicWindow("Products");
-    private MultiWindowTextGUI gui;
     private ProductService productService = Main.ctx.getBean(ProductService.class);
     private Table<String> table;
     private TableModel<String> model;
     private List<Product> products;
 
-    public Products(MultiWindowTextGUI gui) {
-        this.gui = gui;
+
+    public Products(MultiWindowTextGUI gui, String title) {
+        super(gui, title);
         init();
     }
 
@@ -58,8 +56,12 @@ public class Products {
 
         Panel buttonPanel = new Panel(new LinearLayout(Direction.HORIZONTAL));
 
-        buttonPanel.addComponent(new Button("Add..", () -> new NewProduct(gui, model)));
-        buttonPanel.addComponent(new Button("Remove..", () -> removeProduct()));
+        if(Login.isLoggedIn()) {
+            buttonPanel.addComponent(new Button("Add..", () -> new NewProduct(gui, "New product creator", model)));
+        }
+        if(Login.isLoggedIn() && Login.hasAdminRights()) {
+            buttonPanel.addComponent(new Button("Remove..", () -> removeProduct()));
+        }
         buttonPanel.addComponent(new Button("Close", () -> window.close()));
 
         window.setComponent(Panels.vertical(
@@ -68,11 +70,10 @@ public class Products {
         ));
         window.setHints(Arrays.asList(Window.Hint.CENTERED));
         window.setCloseWindowWithEscape(true);
-        gui.addWindow(window);
     }
 
     private void removeProduct() {
-        String numberAsText = Helper.askForANumber(gui, "Enter row # to remove(1 -" + model.getRowCount() + ")");
+        String numberAsText = askForANumber(gui, "Enter row # to remove(1 -" + model.getRowCount() + ")");
 
         if (numberAsText != null) {
             try {
@@ -87,7 +88,7 @@ public class Products {
                     }
                 }
             } catch (Exception e) {
-                Helper.exceptionMessageDialog(gui, "Deleting unsuccessful");
+                popupMessageDialog(gui, "Deleting unsuccessful");
             }
         }
     }

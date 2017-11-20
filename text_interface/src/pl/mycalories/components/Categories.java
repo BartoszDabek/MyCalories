@@ -4,29 +4,25 @@ import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
 import com.googlecode.lanterna.gui2.table.TableModel;
 import pl.mycalories.Main;
-import pl.mycalories.utils.Helper;
 import pl.mycalories.model.Category;
 import pl.mycalories.service.CategoryService;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Categories {
+public class Categories extends AbstractWindow {
 
-    private MultiWindowTextGUI gui;
     private CategoryService categoryService = Main.ctx.getBean(CategoryService.class);
     private Table<String> table;
     private TableModel<String> model;
     private List<Category> categories;
 
-    public Categories(MultiWindowTextGUI gui) {
-        this.gui = gui;
+    public Categories(MultiWindowTextGUI gui, String title) {
+        super(gui, title);
         init();
     }
 
     private void init() {
-        final BasicWindow window = new BasicWindow("Categories");
-
         categories = categoryService.getAll();
         table = new Table<String>("#", "Name");
         model = table.getTableModel();
@@ -39,8 +35,10 @@ public class Categories {
 
         Panel buttonPanel = new Panel(new LinearLayout(Direction.HORIZONTAL));
 
-        buttonPanel.addComponent(new Button("Add..", () -> addNewCategory()));
-        buttonPanel.addComponent(new Button("Remove..", () -> removeCategory()));
+        if (Login.isLoggedIn() && Login.hasAdminRights()) {
+            buttonPanel.addComponent(new Button("Add..", () -> addNewCategory()));
+            buttonPanel.addComponent(new Button("Remove..", () -> removeCategory()));
+        }
         buttonPanel.addComponent(new Button("Close", () -> window.close()));
 
         window.setComponent(Panels.vertical(
@@ -49,16 +47,15 @@ public class Categories {
         ));
         window.setHints(Arrays.asList(Window.Hint.CENTERED));
         window.setCloseWindowWithEscape(true);
-        gui.addWindow(window);
     }
 
     private void addNewCategory() {
-        String name = Helper.askForAString(gui, "Enter category name");
+        String name = askForAString(gui, "Enter category name");
 
         if (name != null) {
             try {
                 if (name.trim().equals("")) {
-                    Helper.exceptionMessageDialog(gui, "Adding unsuccessful - missing name!");
+                    popupMessageDialog(gui, "Adding unsuccessful - missing name!");
                     return;
                 }
 
@@ -70,13 +67,13 @@ public class Categories {
                     model.addRow(Integer.toString(model.getRowCount() + 1), savedCategory.getName());
                 }
             } catch (Exception e) {
-                Helper.exceptionMessageDialog(gui, "Adding unsuccessful - category with that name already exists");
+                popupMessageDialog(gui, "Adding unsuccessful - category with that name already exists");
             }
         }
     }
 
     private void removeCategory() {
-        String numberAsText = Helper.askForANumber(gui, "Enter row # to remove(1 -" + model.getRowCount() + ")");
+        String numberAsText = askForANumber(gui, "Enter row # to remove(1 -" + model.getRowCount() + ")");
 
         if (numberAsText != null) {
             try {
@@ -91,7 +88,7 @@ public class Categories {
                     }
                 }
             } catch (Exception e) {
-                Helper.exceptionMessageDialog(gui, "Deleting unsuccessful");
+                popupMessageDialog(gui, "Deleting unsuccessful");
             }
         }
     }

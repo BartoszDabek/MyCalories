@@ -1,25 +1,23 @@
 package pl.mycalories.components;
 
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
-import pl.mycalories.utils.Helper;
 
-public class MainMenu {
-
-    MultiWindowTextGUI gui;
+public class MainMenu extends AbstractWindow {
 
     public MainMenu(MultiWindowTextGUI gui) {
-        this.gui = gui;
+        super(gui);
 
         Panel header = new Panel(new LinearLayout(Direction.HORIZONTAL));
-        final BasicWindow window = new BasicWindow();
 
-        header.addComponent(new Button("Categories", () -> new Categories(gui)));
-        header.addComponent(new Button("Products", () -> new Products(gui)));
-        if (Login.isLoggedIn() == true) {
+        header.addComponent(new Button("Categories", () -> new Categories(gui, "Categories")));
+        header.addComponent(new Button("Products", () -> new Products(gui, "Products")));
+        header.addComponent(new EmptySpace(new TerminalSize(20,0)));
+        if (Login.isLoggedIn()) {
             header.addComponent(new Button("Logout", () -> {
                 Login.setLoggedOut();
                 window.close();
-                Helper.exceptionMessageDialog(gui, "You have been logged out");
+                popupMessageDialog(gui, "You have been logged out");
                 new MainMenu(gui);
             }));
         } else {
@@ -28,18 +26,10 @@ public class MainMenu {
                 new Login(gui);
             }));
         }
-        header.addComponent(new Button("Exit", () -> exitApp()));
+        header.addComponent(new Button("Exit", () -> System.exit(0)));
 
         window.setComponent(header);
         gui.addWindowAndWait(window);
     }
 
-    private void exitApp() {
-        try {
-            this.gui.getScreen().stopScreen();
-            System.exit(0);
-        } catch (Exception e) {
-
-        }
-    }
 }
