@@ -12,7 +12,13 @@ public class MainMenu extends AbstractWindow {
 
         header.addComponent(new Button("Categories", () -> new Categories(gui, "Categories")));
         header.addComponent(new Button("Products", () -> new Products(gui, "Products")));
+
+        if(Login.isLoggedIn()) {
+            header.addComponent(new Button("Summary", () -> new Summary(gui, "Summary")));
+        }
+
         header.addComponent(new EmptySpace(new TerminalSize(20,0)));
+
         if (Login.isLoggedIn()) {
             header.addComponent(new Button("Logout", () -> {
                 Login.setLoggedOut();
@@ -26,6 +32,7 @@ public class MainMenu extends AbstractWindow {
                 new Login(gui);
             }));
         }
+        
         header.addComponent(new Button("Exit", () -> System.exit(0)));
 
         window.setComponent(header);
