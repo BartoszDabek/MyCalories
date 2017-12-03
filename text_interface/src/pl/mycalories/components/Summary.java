@@ -28,8 +28,17 @@ public class Summary extends AbstractWindow {
     private TextBox dateTextBox;
     private ActionListBox mealsListBox;
 
+    private LocalDate choosenDate;
+
     public Summary(MultiWindowTextGUI gui, String title) {
         super(gui, title);
+        this.choosenDate = LocalDate.now();
+        init();
+    }
+
+    public Summary(MultiWindowTextGUI gui, String title, LocalDate choosenDate) {
+        super(gui, title);
+        this.choosenDate = choosenDate;
         init();
     }
 
@@ -62,12 +71,12 @@ public class Summary extends AbstractWindow {
     }
 
     private void initComponents() {
-        DailyCalories dailyCalories = dailyCaloriesService.findByDate(Login.getCurrentUser(), LocalDate.now());
+        DailyCalories dailyCalories = dailyCaloriesService.findByDate(Login.getCurrentUser(), choosenDate);
 
-        dateTextBox = new TextBox(LocalDate.now().toString());
+        dateTextBox = new TextBox(choosenDate.toString());
         mealsListBox = new ActionListBox();
 
-        if(dailyCalories != null) {
+        if (dailyCalories != null) {
             addMealsToListBox(dailyCalories);
             caloriesLabel = new Label(dailyCalories.getNutritionalValues().getCalories().toString());
             proteinsLabel = new Label(dailyCalories.getNutritionalValues().getProteins().toString());
@@ -88,8 +97,12 @@ public class Summary extends AbstractWindow {
                     .setTitle("Meals")
                     .setDescription("Choose meal to display details");
 
-            for(Meal m: dailyCalories.getMeals()) {
-                meals.addAction(m.getName(), () -> System.out.println(m.getName()));
+            for (Meal m : dailyCalories.getMeals()) {
+                meals.addAction(m.getName() + " - " + m.getNutritionalValues().getCalories() + "KCAL",
+                        () -> {
+                            window.close();
+                            new Meals(gui, m.getName(), m);
+                        });
             }
 
             meals.build().showDialog(gui);
@@ -103,7 +116,7 @@ public class Summary extends AbstractWindow {
 
             mealsListBox.clearItems();
 
-            if(dailyCalories == null) {
+            if (dailyCalories == null) {
                 caloriesLabel.setText("0");
                 proteinsLabel.setText("0");
                 fatsLabel.setText("0");
