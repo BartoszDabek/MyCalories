@@ -31,7 +31,10 @@ public class Meals extends AbstractWindow {
 
     private void init() {
         Panel buttonPanel = new Panel(new LinearLayout(Direction.HORIZONTAL));
-        buttonPanel.addComponent(new Button("Add..", () -> addProductMeal()));
+        buttonPanel.addComponent(new Button("Add..", () -> {
+            window.close();
+            new AddProductMeal(gui, "Add product to " + meal.getName(), meal);
+        }));
         buttonPanel.addComponent(new Button("Remove..", () -> removeProductMeal()));
         buttonPanel.addComponent(new Button("Close", () -> {
             window.close();
@@ -48,10 +51,6 @@ public class Meals extends AbstractWindow {
         window.setHints(Arrays.asList(Window.Hint.CENTERED));
     }
 
-    private void addProductMeal() {
-
-    }
-
     private void removeProductMeal() {
         String rowToRemove = askForANumber(gui, "Enter row # to remove(1 - " + (model.getRowCount() - 1) + ")");
         if (rowToRemove != null) {
@@ -66,6 +65,11 @@ public class Meals extends AbstractWindow {
                 meal.getProductMeals().remove(pmToDelete);
 
                 dailyCalories = dailyCaloriesService.save(dailyCalories);
+                meal = dailyCalories.getMeals()
+                        .stream()
+                        .filter(dc -> dc.getId().equals(meal.getId()))
+                        .findFirst()
+                        .get();
 
                 updateProductMealsMap(Integer.parseInt(rowToRemove) + 1);
                 updateTableAfterDelete(Integer.parseInt(rowToRemove) - 1);

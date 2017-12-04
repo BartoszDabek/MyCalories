@@ -95,7 +95,7 @@ public class Summary extends AbstractWindow {
         mealsListBox.addItem(" >> MEALS <<", () -> {
             ActionListDialogBuilder meals = new ActionListDialogBuilder()
                     .setTitle("Meals")
-                    .setDescription("Choose meal to display details");
+                    .setDescription("Choose a meal to manage it");
 
             for (Meal m : dailyCalories.getMeals()) {
                 meals.addAction(m.getName() + " - " + m.getNutritionalValues().getCalories() + "KCAL",
