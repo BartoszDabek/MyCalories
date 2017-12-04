@@ -14,10 +14,9 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class NewProduct extends AbstractWindow {
+import static pl.mycalories.utils.Helper.INPUT_NUMBERS_REGEX;
 
-    // max 4 digits
-    private final String inputNumbersRegex = "^\\d{0,4}$";
+public class NewProduct extends AbstractWindow {
 
     private ProductService productService = Main.ctx.getBean(ProductService.class);
     private CategoryService categoryService = Main.ctx.getBean(CategoryService.class);
@@ -69,10 +68,10 @@ public class NewProduct extends AbstractWindow {
 
     private void addInputAndLabelsToScreen() {
         name = new TextBox();
-        calories = new TextBox().setValidationPattern(Pattern.compile(inputNumbersRegex));
-        proteins = new TextBox().setValidationPattern(Pattern.compile(inputNumbersRegex));
-        fats = new TextBox().setValidationPattern(Pattern.compile(inputNumbersRegex));
-        carbs = new TextBox().setValidationPattern(Pattern.compile(inputNumbersRegex));
+        calories = new TextBox().setValidationPattern(Pattern.compile(INPUT_NUMBERS_REGEX));
+        proteins = new TextBox().setValidationPattern(Pattern.compile(INPUT_NUMBERS_REGEX));
+        fats = new TextBox().setValidationPattern(Pattern.compile(INPUT_NUMBERS_REGEX));
+        carbs = new TextBox().setValidationPattern(Pattern.compile(INPUT_NUMBERS_REGEX));
 
         inputsAndLabelsPanel.addComponent(new Label("Name"));
         inputsAndLabelsPanel.addComponent(name);
