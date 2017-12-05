@@ -4,6 +4,7 @@ import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder;
 import pl.mycalories.Main;
 import pl.mycalories.model.DailyCalories;
+import pl.mycalories.model.Day;
 import pl.mycalories.model.Meal;
 import pl.mycalories.service.DailyCaloriesService;
 
@@ -13,6 +14,7 @@ import java.util.Arrays;
 public class Summary extends AbstractWindow {
 
     private DailyCaloriesService dailyCaloriesService = Main.ctx.getBean(DailyCaloriesService.class);
+    private DailyCalories dailyCalories;
 
     private Panel mainPanel;
     private Panel headerPanel;
@@ -52,7 +54,7 @@ public class Summary extends AbstractWindow {
 
         addComponentsToNutritionalPanel();
 
-        buttonPanel.addComponent(new Button("Add meal", () -> System.out.println("dodaje")));
+        buttonPanel.addComponent(new Button("Add meal", () -> addNewMeal()));
         buttonPanel.addComponent(new Button("Remove meal", () -> System.out.println("usuwam")));
         buttonPanel.addComponent(new Button("Close", () -> window.close()));
 
@@ -71,13 +73,13 @@ public class Summary extends AbstractWindow {
     }
 
     private void initComponents() {
-        DailyCalories dailyCalories = dailyCaloriesService.findByDate(Login.getCurrentUser(), choosenDate);
+        dailyCalories = dailyCaloriesService.findByDate(Login.getCurrentUser(), choosenDate);
 
         dateTextBox = new TextBox(choosenDate.toString());
         mealsListBox = new ActionListBox();
 
         if (dailyCalories != null) {
-            addMealsToListBox(dailyCalories);
+            addMealsToListBox();
             caloriesLabel = new Label(dailyCalories.getNutritionalValues().getCalories().toString());
             proteinsLabel = new Label(dailyCalories.getNutritionalValues().getProteins().toString());
             fatsLabel = new Label(dailyCalories.getNutritionalValues().getFats().toString());
@@ -91,7 +93,7 @@ public class Summary extends AbstractWindow {
 
     }
 
-    private void addMealsToListBox(DailyCalories dailyCalories) {
+    private void addMealsToListBox() {
         mealsListBox.addItem(" >> MEALS <<", () -> {
             ActionListDialogBuilder meals = new ActionListDialogBuilder()
                     .setTitle("Meals")
@@ -111,7 +113,7 @@ public class Summary extends AbstractWindow {
 
     private void calculateChoosenDay() {
         try {
-            DailyCalories dailyCalories = dailyCaloriesService.findByDate(
+            dailyCalories = dailyCaloriesService.findByDate(
                     Login.getCurrentUser(), LocalDate.parse(dateTextBox.getText()));
 
             mealsListBox.clearItems();
@@ -127,7 +129,7 @@ public class Summary extends AbstractWindow {
                 fatsLabel.setText(dailyCalories.getNutritionalValues().getFats().toString());
                 carbsLabel.setText(dailyCalories.getNutritionalValues().getCarbs().toString());
 
-                addMealsToListBox(dailyCalories);
+                addMealsToListBox();
             }
         } catch (Exception e) {
             popupMessageDialog(gui, "Wrong date format. It should be YYYY-MM-DD");
@@ -146,6 +148,38 @@ public class Summary extends AbstractWindow {
 
         nutritionalValuesPanel.addComponent(new Label("Carbs: "));
         nutritionalValuesPanel.addComponent(carbsLabel);
+    }
+
+    private void addNewMeal() {
+        String mealName = askForAString(gui, "Enter the name of the meal");
+
+        if(mealName != null) {
+            Meal meal = new Meal();
+            meal.setName(mealName);
+
+            if (dailyCalories == null) {
+                createNewDailyCalories();
+            }
+
+            meal.setDailyCalories(dailyCalories);
+
+            dailyCalories.getMeals().add(meal);
+            dailyCalories = dailyCaloriesService.save(dailyCalories);
+
+            popupMessageDialog(gui, "Meal added successfully!");
+            window.close();
+            new Summary(gui, "Summary", dailyCalories.getDay().getDate());
+        }
+    }
+
+    private void createNewDailyCalories() {
+        dailyCalories = new DailyCalories();
+
+        Day day = new Day();
+        day.setUser(Login.getCurrentUser());
+        day.setDate(LocalDate.parse(dateTextBox.getText()));
+
+        dailyCalories.setDay(day);
     }
 
     private void addComponentsToMainPanel() {
