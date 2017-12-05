@@ -34,6 +34,15 @@ public abstract class AbstractWindow {
                 .showDialog(gui);
     }
 
+    protected void popupMessageDialog(MultiWindowTextGUI gui, String message, String title) {
+        new MessageDialogBuilder()
+                .setTitle(title)
+                .setText(message)
+                .addButton(MessageDialogButton.Close)
+                .build()
+                .showDialog(gui);
+    }
+
     protected String askForAString(MultiWindowTextGUI gui, String title) {
         return new TextInputDialogBuilder()
                 .setTitle(title)

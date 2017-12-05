@@ -55,7 +55,7 @@ public class Summary extends AbstractWindow {
         addComponentsToNutritionalPanel();
 
         buttonPanel.addComponent(new Button("Add meal", () -> addNewMeal()));
-        buttonPanel.addComponent(new Button("Remove meal", () -> System.out.println("usuwam")));
+        buttonPanel.addComponent(new Button("Remove meal", () -> deleteMeal()));
         buttonPanel.addComponent(new Button("Close", () -> window.close()));
 
         addComponentsToMainPanel();
@@ -79,7 +79,6 @@ public class Summary extends AbstractWindow {
         mealsListBox = new ActionListBox();
 
         if (dailyCalories != null) {
-            addMealsToListBox();
             caloriesLabel = new Label(dailyCalories.getNutritionalValues().getCalories().toString());
             proteinsLabel = new Label(dailyCalories.getNutritionalValues().getProteins().toString());
             fatsLabel = new Label(dailyCalories.getNutritionalValues().getFats().toString());
@@ -90,24 +89,28 @@ public class Summary extends AbstractWindow {
             fatsLabel = new Label("0");
             carbsLabel = new Label("0");
         }
-
+        addMealsToListBox();
     }
 
     private void addMealsToListBox() {
         mealsListBox.addItem(" >> MEALS <<", () -> {
-            ActionListDialogBuilder meals = new ActionListDialogBuilder()
-                    .setTitle("Meals")
-                    .setDescription("Choose a meal to manage it");
+            try {
+                ActionListDialogBuilder meals = new ActionListDialogBuilder()
+                        .setTitle("Meals")
+                        .setDescription("Choose a meal to manage it");
 
-            for (Meal m : dailyCalories.getMeals()) {
-                meals.addAction(m.getName() + " - " + m.getNutritionalValues().getCalories() + "KCAL",
-                        () -> {
-                            window.close();
-                            new Meals(gui, m.getName(), m);
-                        });
+                for (Meal m : dailyCalories.getMeals()) {
+                    meals.addAction(m.getName() + " - " + m.getNutritionalValues().getCalories() + "KCAL",
+                            () -> {
+                                window.close();
+                                new Meals(gui, m.getName(), m);
+                            });
+                }
+
+                meals.build().showDialog(gui);
+            } catch (Exception e) {
+                popupMessageDialog(gui, "No meals on this day!");
             }
-
-            meals.build().showDialog(gui);
         }).setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
     }
 
@@ -128,9 +131,9 @@ public class Summary extends AbstractWindow {
                 proteinsLabel.setText(dailyCalories.getNutritionalValues().getProteins().toString());
                 fatsLabel.setText(dailyCalories.getNutritionalValues().getFats().toString());
                 carbsLabel.setText(dailyCalories.getNutritionalValues().getCarbs().toString());
-
-                addMealsToListBox();
             }
+
+            addMealsToListBox();
         } catch (Exception e) {
             popupMessageDialog(gui, "Wrong date format. It should be YYYY-MM-DD");
         }
@@ -153,7 +156,7 @@ public class Summary extends AbstractWindow {
     private void addNewMeal() {
         String mealName = askForAString(gui, "Enter the name of the meal");
 
-        if(mealName != null) {
+        if (mealName != null) {
             Meal meal = new Meal();
             meal.setName(mealName);
 
@@ -166,7 +169,7 @@ public class Summary extends AbstractWindow {
             dailyCalories.getMeals().add(meal);
             dailyCalories = dailyCaloriesService.save(dailyCalories);
 
-            popupMessageDialog(gui, "Meal added successfully!");
+            popupMessageDialog(gui, "Meal added successfully!", "Info");
             window.close();
             new Summary(gui, "Summary", dailyCalories.getDay().getDate());
         }
@@ -180,6 +183,31 @@ public class Summary extends AbstractWindow {
         day.setDate(LocalDate.parse(dateTextBox.getText()));
 
         dailyCalories.setDay(day);
+    }
+
+    private void deleteMeal() {
+        try {
+
+
+            ActionListDialogBuilder meals = new ActionListDialogBuilder()
+                    .setTitle("Deleting")
+                    .setDescription("Choose a meal you want to delete");
+
+            for (Meal m : dailyCalories.getMeals()) {
+                meals.addAction(m.getName() + " - " + m.getNutritionalValues().getCalories() + "KCAL",
+                        () -> {
+                            dailyCalories.getMeals().remove(m);
+                            dailyCalories = dailyCaloriesService.save(dailyCalories);
+                            popupMessageDialog(gui, m.getName() + " deleted successfully", "Info");
+                            window.close();
+                            new Summary(gui, "Summary", dailyCalories.getDay().getDate());
+                        });
+            }
+
+            meals.build().showDialog(gui);
+        } catch (Exception e) {
+            popupMessageDialog(gui, "No meals to remove!");
+        }
     }
 
     private void addComponentsToMainPanel() {
