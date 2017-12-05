@@ -27,6 +27,7 @@ public class MainMenu extends AbstractWindow {
                 new MainMenu(gui);
             }));
         } else {
+            header.addComponent(new Button("Register", () -> new Register(gui, "Registration")));
             header.addComponent(new Button("Login", () -> {
                 window.close();
                 new Login(gui);
