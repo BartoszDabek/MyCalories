@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { DataService } from '../../shared/services/data-service.service';
 import { Configuration } from '../../app.constants';
-import { DailyCalories } from '../../shared/interfaces/daily-calories'
+import { DailyCalories } from '../../shared/interfaces/daily-calories';
 
 
 @Component({
@@ -12,7 +12,8 @@ import { DailyCalories } from '../../shared/interfaces/daily-calories'
 })
 export class SummaryComponent implements OnInit {
 
-  private endPoint: string = 'dailyCalories/'
+  private endPoint: string = 'dailyCalories/';
+  private downloadCSVAPI: string = 'downloadCSV';
   private getEndPoint: string = 'dailyCalories/date';
   model = {
     year: Configuration.DATE_NOW.getFullYear(),
@@ -29,6 +30,36 @@ export class SummaryComponent implements OnInit {
 
   summary() {
     this.getSelectedDay();
+  }
+
+  getCSV() {
+    let params = new HttpParams().set("date", this.selectedDateToParam());
+    this.dataService.getAll<DailyCalories>(this.downloadCSVAPI, params, 'text')
+    .subscribe(
+    res => {
+      this.downloadFile(res);
+    },
+    err => {
+      console.log("error while downloading file");
+    });
+}
+
+  downloadFile(data: any) {
+    let parsedResponse = data;
+    let fileName = "Daily-report-" + parsedResponse.substring(0, parsedResponse.indexOf(',')) + ".csv";
+    let blob = new Blob([parsedResponse], { type: 'text/csv' });
+    let url = window.URL.createObjectURL(blob);
+    if(navigator.msSaveOrOpenBlob) {
+        navigator.msSaveBlob(blob, fileName);
+    } else {
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();        
+        document.body.removeChild(a);
+    }
+    window.URL.revokeObjectURL(url);
   }
 
   addMeal() {

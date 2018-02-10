@@ -16,6 +16,11 @@
   <div class="data-wrapper" *ngIf="dayNoExist()">
 
     <div class="container">
+
+      <div *ngIf="dailyCalories.id !== undefined" class="text-right">
+          <button type="button" class="btn btn-sm btn-info" (click)="getCSV()"><i class="fa fa-file-text-o" aria-hidden="true"></i> Export to CSV</button>
+      </div>
+
       <div class="row">
         <div class="col">
           <p>
