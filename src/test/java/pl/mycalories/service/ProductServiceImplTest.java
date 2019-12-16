@@ -17,14 +17,13 @@ import pl.mycalories.service.impl.ProductServiceImpl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = CalorieeCApplication.class)
-@WebAppConfiguration
 public class ProductServiceImplTest {
 
     private ProductService productService;
@@ -50,7 +49,7 @@ public class ProductServiceImplTest {
 
     @Test
     public void should_Return_Product_When_findById_Is_Called() {
-        when(productDaoMock.findOne(5L)).thenReturn(productMock);
+        when(productDaoMock.findById(5L)).thenReturn(Optional.of(productMock));
         Product retriviedProduct = productService.findById(5L);
         Assert.assertThat(retriviedProduct, is(equalTo(productMock)));
     }

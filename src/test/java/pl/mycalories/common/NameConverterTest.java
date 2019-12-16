@@ -14,9 +14,7 @@ import pl.mycalories.model.Category;
 
 import java.util.UnknownFormatConversionException;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = CalorieeCApplication.class)
-@WebAppConfiguration
 public class NameConverterTest {
 
     private NameConverter nameConverter;

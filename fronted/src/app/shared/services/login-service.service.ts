@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Configuration } from '../../app.constants';
-import { Credentials } from '../interfaces/credentials'
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Configuration} from '../../app.constants';
+import {Credentials} from '../interfaces/credentials'
+import {Router} from '@angular/router';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -13,30 +12,32 @@ export class LoginService {
   private actionUrl: string;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.actionUrl = Configuration.HOME_URL + "/user";
+    this.actionUrl = Configuration.HOME_URL + "user";
   }
 
   public getAuthentication(credentials: Credentials) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Basic ' + btoa(credentials.username + ":" + credentials.password))
 
-    return this.http.get(this.actionUrl, { headers: headers })
+    return this.http.get(this.actionUrl, {headers: headers})
       .subscribe(
-      res => {
-        localStorage.setItem("credentials", btoa(credentials.username + ":" + credentials.password));
-        localStorage.setItem('currentUser', JSON.stringify(res));
-        this.authenticated = true;
-        this.router.navigateByUrl('home');
-      },
-      err => {
-        console.log("login-service error");
-      }
+        res => {
+          console.log(res);
+          localStorage.setItem("credentials", btoa(credentials.username + ":" + credentials.password));
+          localStorage.setItem('currentUser', JSON.stringify(res));
+          this.authenticated = true;
+          this.router.navigateByUrl('home');
+        },
+        err => {
+          console.log("login-service error");
+          console.log(err)
+        }
       );
   }
 
   public getCurrentUsername(): string {
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    if(currentUser == null) {
+    if (currentUser == null) {
       return "";
     }
     return currentUser.username;

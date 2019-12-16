@@ -11,7 +11,7 @@ import { DataService } from '../../shared/services/data-service.service';
 export class RegistrationComponent implements OnInit {
 
   model: any = {};
-  apiEndPoint = '/user';
+  apiEndPoint = 'user';
   registerForm: FormGroup
 
   constructor(private router: Router, private dataService: DataService) { }
@@ -44,7 +44,7 @@ export class RegistrationComponent implements OnInit {
       username: this.username.value,
       password: this.password.value,
       email: this.email.value
-    }
+    };
 
     this.dataService.add(this.apiEndPoint, this.model)
       .subscribe(

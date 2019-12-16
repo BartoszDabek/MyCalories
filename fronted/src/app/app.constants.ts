@@ -5,8 +5,8 @@ export class Configuration {
     private static Server = 'http://localhost:8080/';
     // private static ApiUrl = 'api/';
 
-    public static get HOME_URL(): string { 
-        return this.Server; 
+    public static get HOME_URL(): string {
+        return this.Server;
     };
 
     public static get DATE_NOW() {

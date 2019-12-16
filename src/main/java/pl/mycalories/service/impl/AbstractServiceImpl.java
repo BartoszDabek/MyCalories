@@ -5,6 +5,7 @@ import pl.mycalories.service.AbstractService;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractServiceImpl<T, ID extends Serializable, U extends JpaRepository<T, ID>>
         implements AbstractService<T, ID> {
@@ -32,6 +33,7 @@ public abstract class AbstractServiceImpl<T, ID extends Serializable, U extends 
 
     @Override
     public T findById(ID id) {
-        return repository.findOne(id);
+        Optional<T> byId = repository.findById(id);
+        return byId.orElseThrow(RuntimeException::new);
     }
 }

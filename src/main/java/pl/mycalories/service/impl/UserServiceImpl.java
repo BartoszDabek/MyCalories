@@ -2,9 +2,7 @@ package pl.mycalories.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.mycalories.dao.UserDao;
 import pl.mycalories.model.User;
@@ -20,11 +18,9 @@ public class UserServiceImpl extends AbstractServiceImpl<User, Long, UserDao>
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = repository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
+        user.setPassword("{noop}" + user.getPassword());
         return user;
     }
 

@@ -30,10 +30,10 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<User> user(Principal user) {
-        if(user == null) {
-            return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<User>(SecurityUtils.getCurrentUser(userService), HttpStatus.OK);
+        return new ResponseEntity<>(SecurityUtils.getCurrentUser(userService), HttpStatus.OK);
     }
 
     @PostMapping
@@ -43,6 +43,6 @@ public class UserController {
         user.getRoles().add(roleService.findById(2L));
         User createdUser = userService.save(user);
 
-        return new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 }

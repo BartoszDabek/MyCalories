@@ -19,14 +19,13 @@ import pl.mycalories.service.impl.MealServiceImpl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = CalorieeCApplication.class)
-@WebAppConfiguration
 public class MealServiceImplTest {
 
     private MealService mealService;
@@ -52,7 +51,7 @@ public class MealServiceImplTest {
 
     @Test
     public void should_return_meal_when_find_by_id_is_called() {
-        when(mealDao.findOne(5L)).thenReturn(meal);
+        when(mealDao.findById(5L)).thenReturn(Optional.of(meal));
         Meal retrievedMeal = mealService.findById(5L);
         Assert.assertThat(retrievedMeal, is(equalTo(meal)));
     }

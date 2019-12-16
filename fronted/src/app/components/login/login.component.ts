@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../../shared/services/login-service.service';
-import { Credentials } from '../../shared/interfaces/credentials';
+import {Component, OnInit} from '@angular/core';
+import {LoginService} from '../../shared/services/login-service.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +11,8 @@ export class LoginComponent implements OnInit {
   userName: string;
   password: string;
 
-  constructor(private _loginService: LoginService) { }
+  constructor(private _loginService: LoginService) {
+  }
 
   ngOnInit() {
   }
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
     let credentials = {
       username: this.userName,
       password: this.password
-    }
+    };
 
     this._loginService.getAuthentication(credentials);
   }

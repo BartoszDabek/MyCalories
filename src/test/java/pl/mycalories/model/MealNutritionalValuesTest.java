@@ -12,9 +12,7 @@ import pl.mycalories.CalorieeCApplication;
 import java.util.HashSet;
 import java.util.Set;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = CalorieeCApplication.class)
-@WebAppConfiguration
 public class MealNutritionalValuesTest {
 
     private Meal meal;

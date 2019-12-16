@@ -1,10 +1,7 @@
 package pl.mycalories.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,44 +9,62 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import pl.mycalories.service.UserService;
 
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
-    public void setUserService(UserService userService) {
+    public SecurityConfig(UserService userService) {
         this.userService = userService;
     }
 
     @Override
-    @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                    .anyRequest().permitAll()
+                .anyRequest().permitAll()
                 .and()
                 .csrf()
-                    .disable()
-//                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .disable()
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //                .and()
-                    .logout()
-                    .logoutUrl("/logout")
+                .logout()
+                .logoutUrl("/logout")
                 .and()
                 .authenticationProvider(authenticationProvider());
     }
 
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/**/*.ico")
+                .antMatchers("/**/*.webmanifest")
+                .antMatchers("/**/*.css")
+                .antMatchers("/**/*.js")
+                .antMatchers("/**/*.png")
+                .antMatchers("/**/*.svg")
+                .antMatchers("/**/*.jpg")
+                .antMatchers("/**/*.ttf")
+                .antMatchers("/**/*.json")
+                .antMatchers("/**/*.woff2")
+                .antMatchers("/**/*.woff")
+                .antMatchers("/**/*.eot**")
+                .antMatchers("/**/*.eot")
+                .antMatchers("/**/*.jar")
+                .antMatchers("/**/*.dll")
+                .antMatchers("/**/*.xml")
+                .antMatchers("**/fa-regular-400.**")
+                .antMatchers("**/fa-solid-900.**")
+                .antMatchers("**/fa-brands-400.**")
+                .antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
     @Bean
@@ -61,6 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(11);
+        return NoOpPasswordEncoder.getInstance();
     }
 }
