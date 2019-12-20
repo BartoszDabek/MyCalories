@@ -1,10 +1,12 @@
+
+import {map, debounceTime} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { ProductInterface } from '../../shared/interfaces/product';
 import { DataService } from '../../shared/services/data-service.service'
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { LoginService } from '../../shared/services/login-service.service'
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/map';
+
+
 
 @Component({
   selector: 'app-product',
@@ -48,10 +50,10 @@ export class ProductComponent implements OnInit {
   }
 
   search = (text$: Observable<string>) =>
-  text$
-    .debounceTime(200)
-    .map(term => term.length < 2 ? []
-      : this.products.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10));
+  text$.pipe(
+    debounceTime(200),
+    map(term => term.length < 2 ? []
+      : this.products.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)),);
 
   formatter = (x: {name: string}) => x.name;
 

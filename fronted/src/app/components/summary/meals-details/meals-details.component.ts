@@ -1,11 +1,13 @@
+
+import {map, debounceTime} from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Meal } from '../../../shared/interfaces/meal'
 import { DailyCalories } from '../../../shared/interfaces/daily-calories'
 import { ProductInterface } from '../../../shared/interfaces/product'
 import { DataService } from '../../../shared/services/data-service.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-meals-details',
@@ -101,10 +103,10 @@ export class MealsDetailsComponent implements OnInit {
   }
 
   search = (text$: Observable<string>) =>
-    text$
-      .debounceTime(200)
-      .map(product => product.length < 2 ? []
-        : this.products.filter(v => v.name.toLowerCase().indexOf(product.toLowerCase()) > -1).slice(0, 10));
+    text$.pipe(
+      debounceTime(200),
+      map(product => product.length < 2 ? []
+        : this.products.filter(v => v.name.toLowerCase().indexOf(product.toLowerCase()) > -1).slice(0, 10)),);
 
   formatter = (x: { name: string }) => x.name;
 

@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Configuration } from '../../app.constants';
 import { LoginService } from './login-service.service'
 
@@ -13,9 +13,9 @@ export class DataService {
     constructor(private http: HttpClient) {
         this.actionUrl = Configuration.HOME_URL;
     }
-    
+
     public getAll<T>(directSource: string, parameters?: HttpParams, responseType='json'): Observable<T> {
-        // change responseType when it will work 
+        // change responseType when it will work
         // https://github.com/angular/angular/issues/18586
         return this.http.get<T>(this.actionUrl + directSource, {params: parameters, responseType: responseType as 'json'});
     }

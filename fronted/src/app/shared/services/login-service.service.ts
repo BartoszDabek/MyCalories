@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Configuration} from '../../app.constants';
 import {Credentials} from '../interfaces/credentials'
 import {Router} from '@angular/router';
-import 'rxjs/add/operator/map';
+
 
 @Injectable()
 export class LoginService {
