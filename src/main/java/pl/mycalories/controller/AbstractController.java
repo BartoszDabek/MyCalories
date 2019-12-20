@@ -22,13 +22,13 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
     ResponseEntity<List<T>> getAll() {
         List<T> objects = service.getAll();
 
-        return new ResponseEntity<List<T>>(objects, HttpStatus.OK);
+        return new ResponseEntity<>(objects, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public @ResponseBody
     ResponseEntity<T> get(@PathVariable Long id) {
-        T obj = service.findById(id);
+        var obj = service.findById(id);
 
         return new ResponseEntity<T>(obj, HttpStatus.OK);
     }
@@ -37,7 +37,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
     @PostMapping
     public @ResponseBody
     ResponseEntity<?> create(@RequestBody T obj) {
-        T createdObj = service.save(obj);
+        var createdObj = service.save(obj);
 
         return new ResponseEntity<T>(createdObj, HttpStatus.CREATED);
     }
@@ -56,7 +56,7 @@ public abstract class AbstractController<T extends AbstractModel, S extends Abst
     @DeleteMapping("/{id}")
     public @ResponseBody
     ResponseEntity<T> delete (@PathVariable Long id) {
-        T obj = service.findById(id);
+        var obj = service.findById(id);
 
         service.delete(obj);
         return new ResponseEntity<T>(HttpStatus.NO_CONTENT);

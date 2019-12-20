@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.mycalories.error.ErrorInformation;
 import pl.mycalories.model.DailyCalories;
-import pl.mycalories.model.Meal;
 import pl.mycalories.security.SecurityUtils;
 import pl.mycalories.service.DailyCaloriesService;
 import pl.mycalories.service.ErrorService;
@@ -66,7 +65,7 @@ public class DailyCaloriesController extends AbstractController<DailyCalories, D
     }
 
     private boolean errorOccurs(DailyCalories dailyCalories) {
-        for (Meal meal : dailyCalories.getMeals()) {
+        for (var meal : dailyCalories.getMeals()) {
             errorInformation = errorService.checkIfProductsAreModified(meal);
             if (errorInformation != null) {
                 return true;

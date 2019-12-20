@@ -25,7 +25,7 @@ public class CategoryServiceImpl extends AbstractServiceImpl<Category, Long, Cat
 
     @Override
     public Category save(Category category) {
-        NameConverter nameConverter = new NameConverter(category);
+        var nameConverter = new NameConverter(category);
         try {
             nameConverter.convertName();
         } catch (UnknownFormatConversionException e) {
