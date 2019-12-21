@@ -16,11 +16,11 @@ import { Observable } from 'rxjs';
 })
 export class MealsDetailsComponent implements OnInit {
 
-  private addNewProduct: boolean;
-  private editProductMeal: boolean;
-  private mealCopy: Meal;
-  private products: ProductInterface[];
-  private product: ProductInterface;
+  addNewProduct: boolean;
+  editProductMeal: boolean;
+  mealCopy: Meal;
+  products: ProductInterface[];
+  product: ProductInterface;
 
   constructor(private dataService: DataService) { }
 

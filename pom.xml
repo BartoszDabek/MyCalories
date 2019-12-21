@@ -5,11 +5,10 @@
 
     <groupId>pl.bdabek</groupId>
     <artifactId>CalorieeC</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>CalorieeC</name>
-    <description></description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -19,7 +18,7 @@
     </parent>
 
     <properties>
-        <start-class>pl.mycalories.Main</start-class>
+        <start-class>pl.mycalories.CalorieeCApplication</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
@@ -104,8 +103,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>10</source>
-                    <target>10</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>
