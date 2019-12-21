@@ -56,7 +56,7 @@ export class SummaryComponent implements OnInit {
         a.href = url;
         a.download = fileName;
         document.body.appendChild(a);
-        a.click();        
+        a.click();
         document.body.removeChild(a);
     }
     window.URL.revokeObjectURL(url);
@@ -137,7 +137,7 @@ export class SummaryComponent implements OnInit {
     return defaultColor;
   }
 
-  private dayNoExist(): boolean {
+  dayNoExist(): boolean {
     if (this.dailyCalories === undefined) {
       this.setDefaultValues();
     }

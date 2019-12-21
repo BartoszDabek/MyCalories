@@ -22,7 +22,7 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private loginService: LoginService,
+    public loginService: LoginService,
     private route: ActivatedRoute,
     private http: HttpClient
   ) { }

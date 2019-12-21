@@ -24,7 +24,7 @@
                     <i class="fa fa-sort-asc" *ngIf="reverseSort && sortName === 'name'" (click)="reverseSorting()"></i>
                 </th>
                 <th>Calories</th>
-                <th (click)="setSortBy('category.name')">Category  
+                <th (click)="setSortBy('category.name')">Category
                     <i class="fa fa-sort" *ngIf="sortName != 'category.name'" (click)="reverseSorting()"></i>
                     <i class="fa fa-sort-desc" *ngIf="!reverseSort && sortName === 'category.name'" (click)="reverseSorting()"></i>
                     <i class="fa fa-sort-asc" *ngIf="reverseSort && sortName === 'category.name'" (click)="reverseSorting()"></i>

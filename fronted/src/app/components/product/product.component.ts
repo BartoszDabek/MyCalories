@@ -1,11 +1,9 @@
-
-import {map, debounceTime} from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
-import { ProductInterface } from '../../shared/interfaces/product';
-import { DataService } from '../../shared/services/data-service.service'
-import { Observable } from 'rxjs';
-import { LoginService } from '../../shared/services/login-service.service'
-
+import {debounceTime, map} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {ProductInterface} from '../../shared/interfaces/product';
+import {DataService} from '../../shared/services/data-service.service'
+import {Observable} from 'rxjs';
+import {LoginService} from '../../shared/services/login-service.service'
 
 
 @Component({
@@ -14,27 +12,28 @@ import { LoginService } from '../../shared/services/login-service.service'
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
-  private apiEndPoint: string = 'product/';
-  private products: ProductInterface[];
-  private product: ProductInterface;
-  private reverseSort: boolean;
-  private sortName: string;
+  apiEndPoint: string = 'product/';
+  products: ProductInterface[];
+  reverseSort: boolean;
+  sortName: string;
+  term: string;
 
-  constructor(private dataService: DataService, private loginService: LoginService) { }
+  constructor(private dataService: DataService, public loginService: LoginService) {
+  }
 
   ngOnInit() {
-      this.dataService.getAll<ProductInterface[]>(this.apiEndPoint)
-        .subscribe(
-          res => {
-            this.products = res;
-            for(let i=0; i<res.length; i++) {
-              this.products[i].name = this.capitalizeFirstLetterAndLowerCaseOthers(this.products[i].name);
-              this.products[i].category.name = this.capitalizeFirstLetterAndLowerCaseOthers(this.products[i].category.name);
-            }
-          },
-          err => {
-              console.log("error in get_all product component");
-          });
+    this.dataService.getAll<ProductInterface[]>(this.apiEndPoint)
+      .subscribe(
+        res => {
+          this.products = res;
+          for (let i = 0; i < res.length; i++) {
+            this.products[i].name = this.capitalizeFirstLetterAndLowerCaseOthers(this.products[i].name);
+            this.products[i].category.name = this.capitalizeFirstLetterAndLowerCaseOthers(this.products[i].category.name);
+          }
+        },
+        err => {
+          console.log("error in get_all product component");
+        });
   }
 
   private capitalizeFirstLetterAndLowerCaseOthers(name: string) {
@@ -50,11 +49,11 @@ export class ProductComponent implements OnInit {
   }
 
   search = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    map(term => term.length < 2 ? []
-      : this.products.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)),);
+    text$.pipe(
+      debounceTime(200),
+      map(term => term.length < 2 ? []
+        : this.products.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10)),);
 
-  formatter = (x: {name: string}) => x.name;
+  formatter = (x: { name: string }) => x.name;
 
 }

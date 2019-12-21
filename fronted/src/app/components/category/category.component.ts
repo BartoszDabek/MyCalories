@@ -9,11 +9,11 @@ import { LoginService } from '../../shared/services/login-service.service'
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-  private apiEndPoint: string = 'category/';
-  private categoryNameInput: string;
-  private categories: CategoryInterface[];
+  apiEndPoint: string = 'category/';
+  categoryNameInput: string;
+  categories: CategoryInterface[];
 
-  constructor(private dataService: DataService, private loginService: LoginService) { }
+  constructor(private dataService: DataService, public loginService: LoginService) { }
 
   ngOnInit() {
     this.dataService.getAll<CategoryInterface[]>(this.apiEndPoint)
@@ -28,8 +28,8 @@ export class CategoryComponent implements OnInit {
 
   private addCategory() {
     if (this.categoryIsFilled()) {
-        this.dataService.add<CategoryInterface>(this.apiEndPoint, { 
-          name: this.categoryNameInput 
+        this.dataService.add<CategoryInterface>(this.apiEndPoint, {
+          name: this.categoryNameInput
         })
         .subscribe(
           res => {
@@ -42,7 +42,7 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-  
+
   deleteCategory(category: CategoryInterface) {
     for (let i = 0; i < this.categories.length; i++) {
       if (this.categories[i] === category) {
@@ -57,7 +57,7 @@ export class CategoryComponent implements OnInit {
       }
     }
   }
-  
+
   private categoryIsFilled() {
     if(this.categoryNameInput !== undefined) {
       this.categoryNameInput = this.categoryNameInput.trim();
