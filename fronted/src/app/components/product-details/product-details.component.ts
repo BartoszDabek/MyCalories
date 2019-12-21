@@ -39,7 +39,7 @@ export class ProductDetailsComponent implements OnInit {
           console.log("error in get_single product-details component");
         });
 
-      this.http.get(Configuration.HOME_URL + this.endPoint + id + '/opinions')
+      this.http.get(this.endPoint + id + '/opinions')
         .subscribe(
         res => {
           this.opinions = res;

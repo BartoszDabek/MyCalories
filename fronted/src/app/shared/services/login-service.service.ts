@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Configuration} from '../../app.constants';
 import {Credentials} from '../interfaces/credentials'
 import {Router} from '@angular/router';
 
@@ -9,17 +8,15 @@ import {Router} from '@angular/router';
 export class LoginService {
 
   public authenticated: boolean;
-  private actionUrl: string;
 
   constructor(private http: HttpClient, private router: Router) {
-    this.actionUrl = Configuration.HOME_URL + "user";
   }
 
   public getAuthentication(credentials: Credentials) {
     const headers = new HttpHeaders()
       .set('Authorization', 'Basic ' + btoa(credentials.username + ":" + credentials.password))
 
-    return this.http.get(this.actionUrl, {headers: headers})
+    return this.http.get("user", {headers: headers})
       .subscribe(
         res => {
           console.log(res);
